@@ -4,6 +4,8 @@ import LoadingPage from "../components/common/LoadingPage";
 
 const Main = lazy(() => import("../pages/MainPage"));
 const MyPage = lazy(() => import("../pages/MainPage"));
+const Login = lazy(()=> import("../pages/LoginPage"))
+const Signup = lazy(()=> import("../pages/SignupPage"))
 
 // 경로 매핑하는 곳 (root)
 const Router = () => {
@@ -21,6 +23,22 @@ const Router = () => {
       element: (
         <Suspense fallback={<LoadingPage />}>
           <MyPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<LoadingPage />}>
+          <Login />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/signup",
+      element: (
+        <Suspense fallback={<LoadingPage />}>
+          <Signup />
         </Suspense>
       ),
     },
