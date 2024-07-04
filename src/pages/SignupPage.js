@@ -17,7 +17,7 @@ const SignupPage = () => {
     const { name, value } = event.target;
     setInputVal((prev) => ({ ...prev, [name]: value }));
 
-    if (name == "email") {
+    if (name === "email") {
       validateEmail(value);
     }
     if (name === "password" || name === "passwordVerify") {
@@ -55,7 +55,7 @@ const SignupPage = () => {
       return;
     }
 
-    if (inputVal.name.trim().length == 0) {
+    if (inputVal.name.trim().length === 0) {
       alert("이름을 입력해주세요!")
       return
     }

@@ -1,0 +1,63 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { loginPost } from "../api/memberApi";
+import { getCookie, removeCookie, setCookie } from "../util/cookieUtil";
+
+// email에 해당하는 값이 있으면 로그인상태, 없으면 비로그인상태로 간주
+const initState = {
+	email: "",
+};
+
+// 쿠키있는지 확인 함수 추가
+const getMemberCookie = () => {
+	const memberCookie = getCookie("member");
+	console.log("memberCookie", memberCookie)
+	if (memberCookie && memberCookie.name) {
+		// 한글깨짐 대비
+		memberCookie.name = decodeURIComponent(memberCookie.name);
+	}
+	return memberCookie;
+};
+
+export const loginPostAsync = createAsyncThunk(
+	"loginPostAsync",
+	(useParams) => {
+		return loginPost(useParams);
+	}
+);
+
+const loginSlice = createSlice({
+	name: "loginSlice",
+	initialState: getMemberCookie() || initState,
+	reducers: {
+    logout: (state, action) => {
+			console.log("loginSlice logout 실행")
+			removeCookie("member");
+			return { ...initState };
+		},
+  },
+	//비동기 작업 처리
+	extraReducers: (builder) => {
+		builder
+			.addCase(loginPostAsync.fulfilled, (state, action) => {
+				console.log("fulfilled");
+				const payload = action.payload;
+				// 정상 처리시에만 쿠키 생성
+				if (!payload.error) {
+					setCookie("member", JSON.stringify(payload), 1);
+				}
+				return payload;
+			})
+			.addCase(loginPostAsync.pending, (state, action) => {
+				console.log("pending");
+			})
+			.addCase(loginPostAsync.rejected, (state, action) => {
+				console.log("rejected");
+			});
+	},
+});
+
+// 액션크리에이터 외부로 내보내기
+export const { logout } = loginSlice.actions;
+
+// 리듀서 내보내기 -> configureStore에 등록가능하도록
+export default loginSlice.reducer;
