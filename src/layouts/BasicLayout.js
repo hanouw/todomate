@@ -1,4 +1,3 @@
-import NavigationBar from "../components/main/NavigationBar";
 import Header from "./Header";
 
 const BasicLayout = ({ children }) => {
@@ -6,7 +5,6 @@ const BasicLayout = ({ children }) => {
     <>
       <Header />
       <div>{children}</div>
-      <NavigationBar />
     </>
   );
 };

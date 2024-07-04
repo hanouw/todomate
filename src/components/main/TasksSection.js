@@ -1,11 +1,11 @@
 import React from "react";
 
-function TasksSection() {
+const TasksSection = () => {
   return (
-    <div className="flex flex-col rounded-lg bg-white p-4">
-      <TaskCategory title="개인" tasks={["아침밥 먹기", "React 공부하기"]} />
+    <div className="flex flex-col rounded-lg bg-whitepl-4">
+      <TaskCategory title="할 일" tasks={["아침밥 먹기", "React 공부하기"]} />
       <TaskCategory
-        title="공유"
+        title="루틴"
         tasks={[
           "Python 공부하기",
           "Java 복습하기",
@@ -15,52 +15,70 @@ function TasksSection() {
       />
     </div>
   );
-}
+};
 
-function TaskCategory({ title, tasks }) {
+const TaskCategory = ({ title, tasks }) => {
   return (
-    <div className="mb-8">
+    <div className="mb-8 ml-10">
       <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center space-x-2 py-2 px-3 bg-gray-200 rounded-3xl">
-          {title === "개인" ? (
+        <div className="flex items-center space-x-2 py-2">
+          {title === "할 일" ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="gray"
-              class="size-5"
+              className="size-5"
             >
-              <path
-                fill-rule="evenodd"
-                d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
-                clip-rule="evenodd"
-              />
+              <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
             </svg>
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="gray"
-              class="size-5"
+              className="size-5"
             >
-              <path d="M15.75 8.25a.75.75 0 0 1 .75.75c0 1.12-.492 2.126-1.27 2.812a.75.75 0 1 1-.992-1.124A2.243 2.243 0 0 0 15 9a.75.75 0 0 1 .75-.75Z" />
               <path
-                fill-rule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM4.575 15.6a8.25 8.25 0 0 0 9.348 4.425 1.966 1.966 0 0 0-1.84-1.275.983.983 0 0 1-.97-.822l-.073-.437c-.094-.565.25-1.11.8-1.267l.99-.282c.427-.123.783-.418.982-.816l.036-.073a1.453 1.453 0 0 1 2.328-.377L16.5 15h.628a2.25 2.25 0 0 1 1.983 1.186 8.25 8.25 0 0 0-6.345-12.4c.044.262.18.503.389.676l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.575 15.6Z"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                clipRule="evenodd"
               />
             </svg>
           )}
 
-          <div className="font-[Pretendard-SemiBold] text-sm">{title}</div>
-          <button className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-            +
+          <div className="font-[Pretendard-SemiBold] text-base">{title}</div>
+          <button className="w-16 h-6 bg-white rounded-xl justify-center border-2 border-gray-600 text-sm font-[Pretendard-Regular]">
+            추가하기
           </button>
         </div>
       </div>
       <ul>
         {tasks.map((task) => (
           <li key={task} className="flex justify-between py-1 mt-3">
-            <div className="h-[23px] w-[23px] rounded-lg bg-my-color-gray"></div>
+            <div
+              className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
+                task === "아침밥 먹기" ? "bg-black" : "bg-my-color-gray"
+              }`}
+            >
+              {task === "아침밥 먹기" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="3"
+                  stroke="white"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
+              ) : (
+                <></>
+              )}
+            </div>
             <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
               {task}
             </span>
@@ -68,13 +86,13 @@ function TaskCategory({ title, tasks }) {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="gray"
-              class="size-6"
+              className="size-6"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
               />
             </svg>
@@ -83,6 +101,6 @@ function TaskCategory({ title, tasks }) {
       </ul>
     </div>
   );
-}
+};
 
 export default TasksSection;

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function CalendarSection() {
+const CalendarSection = ({ callbackFn }) => {
   const days = ["월", "화", "수", "목", "금", "토", "일"];
 
-  const [currentDate, setCurrentDate] = useState(new Date(2024, 4, 1)); // Starting with May 2024
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    callbackFn(currentDate);
+  }, [currentDate]);
 
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -31,55 +35,65 @@ function CalendarSection() {
     });
   };
 
+  const dayClicked = (clickedDate) => {
+    setCurrentDate(new Date(year, month, clickedDate));
+  };
+
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const daysInMonth = getDaysInMonth(year, month);
-  const startDay = new Date(year, month, 1).getDay(); // Get the starting day of the week (0 = Sunday, 6 = Saturday)
+  const startDay = new Date(year, month, 1).getDay(); // 0 = 일요일, 6 = 토요일
 
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
-    <div className="flex flex-col items-center bg-white p-4 rounded-lg w-full">
-      <div className="flex justify-between w-full">
-        <div className="text-lg font-semibold mb-4">{`${year}년 ${
-          month + 1
-        }월`}</div>
-        <div className="flex">
+    <div className="flex flex-col items-center bg-white p-4 rounded-lg w-full border">
+      <div className="flex justify-between w-full pb-7">
+        <div
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={handlePrevMonth}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
-            className="size-6 cursor-pointer"
-            onClick={handlePrevMonth}
+            className="size-5"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M15.75 19.5 8.25 12l7.5-7.5"
             />
           </svg>
 
+          <button className="font-[Pretendard-Regular]">이전달</button>
+        </div>
+        <div
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={handleNextMonth}
+        >
+          <button className="font-[Pretendard-Regular]">다음달</button>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
-            className="size-6 cursor-pointer"
-            onClick={handleNextMonth}
+            className="size-5"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="m8.25 4.5 7.5 7.5-7.5 7.5"
             />
           </svg>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-5 w-full mb-2">
+      {/* 월화수목금토일 */}
+      <div className="grid grid-cols-7 gap-3 w-full mb-5">
         {days.map((day) => (
           <div
             key={day}
@@ -89,8 +103,8 @@ function CalendarSection() {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-x-5 w-full">
-        {/* Empty divs for the start of the month */}
+      <div className="grid grid-cols-7 gap-x-3 w-full">
+        {/* 시작한 날 ...Array() 안에 작성 */}
         {[...Array(startDay)].map((_, index) => (
           <div key={`empty-${index}`} className="text-center p-2"></div>
         ))}
@@ -98,13 +112,14 @@ function CalendarSection() {
           <div
             className="grid justify-center place-items-center text-sm mb-1"
             key={date}
+            onClick={() => dayClicked(date)}
           >
             <div
               className={`grid place-items-center mb-[1px] h-[23px] w-[23px] rounded-lg ${
                 date === 3 ? "bg-black text-white" : "bg-my-color-gray"
               }`}
             >
-              <span className="font-[Pretendard-Regular] text-sm">
+              <span className="font-[Pretendard-SemiBold] text-sm">
                 {date === 1 || date === 3 ? 1 : <></>}
               </span>
             </div>
@@ -114,6 +129,6 @@ function CalendarSection() {
       </div>
     </div>
   );
-}
+};
 
 export default CalendarSection;
