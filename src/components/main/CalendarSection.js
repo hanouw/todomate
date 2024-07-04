@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const CalendarSection = ({ callbackFn }) => {
+const CalendarSection = ({ callbackFn, refresh }) => {
   const days = ["월", "화", "수", "목", "금", "토", "일"];
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
     callbackFn(currentDate);
-  }, [currentDate]);
+  }, [currentDate, refresh]);
 
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -41,6 +41,7 @@ const CalendarSection = ({ callbackFn }) => {
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+  const day = currentDate.getDate();
   const daysInMonth = getDaysInMonth(year, month);
   const startDay = new Date(year, month, 1).getDay(); // 0 = 일요일, 6 = 토요일
 
@@ -123,7 +124,16 @@ const CalendarSection = ({ callbackFn }) => {
                 {date === 1 || date === 3 ? 1 : <></>}
               </span>
             </div>
-            {date}
+
+            <span
+              className={`rounded-full text-center justify-center w-5 h-5 ${
+                // year == new Date().getFullYear() &&
+                // month == new Date().getMonth() &&
+                date == day ? "bg-black text-white" : "bg-white"
+              }`}
+            >
+              {date}
+            </span>
           </div>
         ))}
       </div>
