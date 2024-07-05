@@ -6,10 +6,13 @@ import {
   taskFinishedState,
 } from "../../api/TodomateApi";
 import RotineAddModal from "../rotine/RotineAddModal";
+import { useSelector } from "react-redux";
 
 const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
   const [normalList, setNormalList] = useState([]);
   const [routineList, setRoutineList] = useState([]);
+
+  const loginInfo = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
     getNormalTaskList({ year: year, month: month, day: day }).then(
@@ -17,7 +20,7 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
         setNormalList(response);
       }
     );
-    getRoutineTaskList({ year: year, month: month, day: day }).then(
+    getRoutineTaskList({ mid: loginInfo.mid, year: year, month: month }).then(
       (response) => {
         setRoutineList(response);
       }
@@ -123,7 +126,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             </>
           ) : (
             <>
-              {isModalOpen ? <RotineAddModal /> : <></>}
+            {isModalOpen && (<RotineAddModal closeModal={() => setIsModalOpen(false)}/>)}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

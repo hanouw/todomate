@@ -29,7 +29,7 @@ const RotineAddModal = ({ closeModal }) => {
       console.log("addButtonclicked email", loginInfo.mid, input);
       addRotine(loginInfo.mid, input).then((data) => {
         if(data === "success") {
-          closeModal();
+          closeModal()
         }
       })
     } else {

@@ -55,9 +55,9 @@ export const addRotine =  async (mid, routineDTO) => {
   return response.data;
 }
 
-export const getRoutineTaskList = async ({ year, month, day }) => {
+export const getRoutineTaskList = async ({ mid, year, month }) => {
   const response = await axios.get(
-    `${TODOMATE_API_SERVER_HOST}/routines/${year}/${month}/${day}`
+    `${TODOMATE_API_SERVER_HOST}/routines/${mid}/${year}/${month}`
   );
   return response.data.RESULT;
 };
