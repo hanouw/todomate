@@ -45,11 +45,11 @@ const MainPage = () => {
   const day = currentDate.getDate();
   return (
     <BasicLayout>
-      <div className="grid place-items-center pt-[35px] pb-[147px]">
-        <div className="flex justify-center w-full p-10 select-none">
-          <div className="text-2xl font-[Pretendard-Bold]">{`${year}년 ${month}월 ${day}일`}</div>
+      <div className="grid place-items-center">
+        <div className="flex justify-center w-full p-4 lg:p-16 select-none">
+          <div className="text-xl lg:text-2xl font-[Pretendard-Bold]">{`${year}년 ${month}월 ${day}일`}</div>
         </div>
-        <div className="grid grid-cols-2 max-w-4xl w-full gap-5">
+        <div className="lg:grid lg:grid-cols-2 max-w-xs lg:max-w-4xl w-full gap-5">
           <CalendarSection callbackFn={monthIsChanged} refresh={refresh} />
           <TasksSection
             year={year}

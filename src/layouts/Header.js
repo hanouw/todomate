@@ -1,7 +1,7 @@
 export default function Header() {
   return (
-    <header className="flex flex-col items-center p-6">
-      <div className="max-w-4xl w-full">
+    <header className="flex flex-col items-center">
+      <div className="max-w-4xl w-full p-4 lg:p-6 border-b-2">
         <nav
           className="mx-auto flex items-center justify-between bg-white max-w-4xl w-full"
           aria-label="Global"

@@ -57,7 +57,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
-    <div className="flex flex-col items-center bg-white p-4 rounded-lg w-full border">
+    <div className="flex flex-col items-center bg-white p-4 lg:rounded-lg w-full lg:border">
       <div className="flex justify-between w-full pb-7">
         <div
           className="flex gap-2 items-center cursor-pointer"
@@ -130,9 +130,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
           >
             <div
               className={`grid place-items-center mb-[1px] h-[23px] w-[23px] rounded-lg ${
-                taskList[index + 1] == -1
-                  ? "bg-black text-white"
-                  : "bg-my-color-gray"
+                taskList[index + 1] == -1 ? "bg-black" : "bg-my-color-gray"
               }`}
             >
               <span className="font-[Pretendard-SemiBold] text-sm">
@@ -164,9 +162,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
 
             <span
               className={`rounded-full text-center justify-center w-5 h-5 ${
-                // year == new Date().getFullYear() &&
-                // month == new Date().getMonth() &&
-                date == day ? "bg-black text-white" : "bg-white"
+                date == day ? "bg-black text-white" : ""
               }`}
             >
               {date}

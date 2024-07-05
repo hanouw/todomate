@@ -46,6 +46,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   const addTaskClicked = () => {
     callbackFn({ type: "NORMAL", value: inputVal });
     setShowInputField(false);
+    setInputVal(null);
   };
 
   const inputChange = (e) => {
@@ -60,10 +61,16 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
 
   const taskModifyClicked = (tid, originVal) => {
     if (inputVal == undefined) {
-      inputVal = originVal;
+      if (originVal == null) {
+        alert("항목을 채워주세요");
+      } else {
+        callbackFn({ type: "MODIFY", value: originVal, tid: tid });
+        setIsModify(-1);
+      }
+    } else {
+      callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
+      setIsModify(-1);
     }
-    callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
-    setIsModify(-1);
   };
 
   // ======================================================= Rotine
@@ -97,7 +104,10 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   strokeWidth="1.5"
                   stroke="currentColor"
                   className="size-6"
-                  onClick={() => setShowInputField(!showInputField)}
+                  onClick={() => {
+                    setShowInputField(!showInputField);
+                    setShowThreeDot(-1);
+                  }}
                 >
                   <path
                     strokeLinecap="round"
