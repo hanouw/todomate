@@ -44,9 +44,11 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addTaskClicked = () => {
-    callbackFn({ type: "NORMAL", value: inputVal });
-    setShowInputField(false);
-    setInputVal(null);
+    if (inputVal != undefined) {
+      callbackFn({ type: "NORMAL", value: inputVal });
+      setShowInputField(false);
+      setInputVal(null);
+    }
   };
 
   const inputChange = (e) => {
@@ -60,17 +62,12 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   };
 
   const taskModifyClicked = (tid, originVal) => {
-    if (inputVal == undefined) {
-      if (originVal == null) {
-        alert("항목을 채워주세요");
-      } else {
-        callbackFn({ type: "MODIFY", value: originVal, tid: tid });
-        setIsModify(-1);
-      }
+    if (inputVal == "") {
+      callbackFn({ type: "MODIFY", value: originVal, tid: tid });
     } else {
       callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
-      setIsModify(-1);
     }
+    setIsModify(-1);
   };
 
   // ======================================================= Rotine
