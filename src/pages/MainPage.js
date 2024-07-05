@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import BasicLayout from "../layouts/BasicLayout";
 import CalendarSection from "../components/main/CalendarSection";
 import TasksSection from "../components/main/TasksSection";
-import { addTask } from "../api/TodomateApi";
+import { addTask, updateTask } from "../api/TodomateApi";
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -12,8 +12,8 @@ const MainPage = () => {
     setCurrentDate(result);
   }, []);
 
-  const taskIsChanged = async ({ type, value }) => {
-    if (type != "refresh") {
+  const taskIsChanged = async ({ type, value, tid }) => {
+    if (type == "NORMAL") {
       const taskDTO = {
         finished: false,
         detail: value,
@@ -22,6 +22,10 @@ const MainPage = () => {
         mid: 1,
       };
       addTask(taskDTO).then(() => {
+        setRefresh(!refresh);
+      });
+    } else if (type == "MODIFY") {
+      updateTask({ value: value, tid, tid }).then(() => {
         setRefresh(!refresh);
       });
     } else {
