@@ -42,7 +42,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   }, [tasks]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const addTaskClicked = () => {
     callbackFn({ type: "NORMAL", value: inputVal });
     setShowInputField(false);
@@ -68,9 +68,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
 
   // ======================================================= Rotine
   const rotineAddBtnClicked = () => {
-    console.log("add btn click")
+    console.log("add btn click");
     setIsModalOpen(true);
-  }
+  };
 
   return (
     <div className="mb-8">
@@ -86,7 +86,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
               >
                 <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
               </svg>
-              <div className="font-[Pretendard-SemiBold] text-base">
+              <div className="font-[Pretendard-SemiBold] text-base select-none">
                 {title}
               </div>
               {!showInputField ? (
@@ -107,7 +107,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 </svg>
               ) : (
                 <button
-                  className="w-8 h-5 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular]"
+                  className="w-8 h-5 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular] select-none"
                   onClick={() => setShowInputField(!showInputField)}
                 >
                   취소
@@ -116,7 +116,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             </>
           ) : (
             <>
-            {isModalOpen ? (<RotineAddModal />) : (<></>)}
+              {isModalOpen ? <RotineAddModal /> : <></>}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -129,24 +129,24 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <div className="font-[Pretendard-SemiBold] text-base">
+              <div className="font-[Pretendard-SemiBold] text-base select-none">
                 {title}
               </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                  onClick={rotineAddBtnClicked}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+                onClick={rotineAddBtnClicked}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
             </>
           )}
         </div>
@@ -166,7 +166,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
               onChange={inputChange}
             />
             <button
-              className="w-16 h-6 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular]"
+              className="w-16 h-6 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular] select-none"
               onClick={() => addTaskClicked()}
             >
               추가하기
@@ -222,13 +222,13 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             {isModify == task.tid ? (
               <div className="flex">
                 <button
-                  className="w-8 h-5 mx-2 bg-white rounded-xl border-2 border-black justify-center text-black text-xs font-[Pretendard-Regular]"
+                  className="w-8 h-5 mx-2 bg-white rounded-xl border-2 border-black justify-center text-black text-xs font-[Pretendard-Regular] select-none"
                   onClick={() => taskModifyClicked(task.tid, task.detail)}
                 >
                   저장
                 </button>
                 <button
-                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular]"
+                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
                   onClick={() => setIsModify(-1)}
                 >
                   취소
@@ -279,7 +279,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 </svg>
                 {/* 취소 버튼 */}
                 <button
-                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular]"
+                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
                   onClick={() => setShowThreeDot(-1)}
                 >
                   취소

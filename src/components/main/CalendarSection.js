@@ -78,13 +78,17 @@ const CalendarSection = ({ callbackFn, refresh }) => {
             />
           </svg>
 
-          <button className="font-[Pretendard-Regular]">이전달</button>
+          <button className="font-[Pretendard-Regular] select-none">
+            이전달
+          </button>
         </div>
         <div
           className="flex gap-2 items-center cursor-pointer"
           onClick={handleNextMonth}
         >
-          <button className="font-[Pretendard-Regular]">다음달</button>
+          <button className="font-[Pretendard-Regular] select-none">
+            다음달
+          </button>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -103,7 +107,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
       </div>
 
       {/* 월화수목금토일 */}
-      <div className="grid grid-cols-7 gap-3 w-full mb-5">
+      <div className="grid grid-cols-7 gap-3 w-full mb-5 select-none">
         {days.map((day) => (
           <div
             key={day}
@@ -113,7 +117,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-x-3 w-full">
+      <div className="grid grid-cols-7 gap-x-3 w-full select-none">
         {/* 시작한 날 ...Array() 안에 작성 */}
         {[...Array(startDay)].map((_, index) => (
           <div key={`empty-${index}`} className="text-center p-2"></div>

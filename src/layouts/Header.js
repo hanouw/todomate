@@ -7,7 +7,9 @@ export default function Header() {
           aria-label="Global"
         >
           <div className="flex items-center gap-2">
-            <div className="text-xl font-semibold">Username</div>
+            <div className="text-xl font-[Pretendard-Bold] select-none">
+              Username
+            </div>
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
