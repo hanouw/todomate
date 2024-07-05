@@ -67,10 +67,6 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   };
 
   // ======================================================= Rotine
-  const rotineAddBtnClicked = () => {
-    console.log("add btn click")
-    setIsModalOpen(true);
-  }
 
   return (
     <div className="mb-8">
@@ -116,7 +112,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             </>
           ) : (
             <>
-            {isModalOpen ? (<RotineAddModal />) : (<></>)}
+            {isModalOpen && (<RotineAddModal closeModal={() => setIsModalOpen(false)}/>)}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -139,7 +135,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   strokeWidth="1.5"
                   stroke="currentColor"
                   className="size-6"
-                  onClick={rotineAddBtnClicked}
+                  onClick={() => setIsModalOpen(true)}
                 >
                   <path
                     strokeLinecap="round"

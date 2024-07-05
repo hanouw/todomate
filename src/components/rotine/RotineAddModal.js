@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { addRotine } from '../../api/TodomateApi';
 
 const initState = {
   detail: "",
@@ -7,15 +8,11 @@ const initState = {
   endDate: "",
 }
 
-const RotineAddModal = ({ closeModal, addTodo }) => {
+const RotineAddModal = ({ closeModal }) => {
 
   const [input, setInput] = useState({ ...initState })
 
   const loginInfo = useSelector((state) => state.loginSlice);
-
-  const handleClose = () => {
-    
-  };
 
   const handleChange = (e) => {
     input[e.target.name] = e.target.value;
@@ -30,7 +27,11 @@ const RotineAddModal = ({ closeModal, addTodo }) => {
 
     if (gap > 0) {
       console.log("addButtonclicked email", loginInfo.mid, input);
-      // createTrip(loginInfo.email, input).then(() => handleClose());
+      addRotine(loginInfo.mid, input).then((data) => {
+        if(data === "success") {
+          closeModal();
+        }
+      })
     } else {
       alert("올바른 시작일과 종료일을 입력해주세요");
     }
@@ -52,7 +53,7 @@ const RotineAddModal = ({ closeModal, addTodo }) => {
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="crud-modal"
-              onClick={handleClose}
+              onClick={closeModal}
             >
               <svg
                 className="w-3 h-3"

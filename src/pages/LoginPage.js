@@ -48,7 +48,7 @@ const LoginPage = () => {
             value={loginParam.email}
             onChange={handleChange}
             className={inputClassName}
-            placeholder="Befree@befree.com"
+            placeholder="todomate@gmail.com"
             required
           />
         </div>

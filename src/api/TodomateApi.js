@@ -39,14 +39,27 @@ export const getNormalTaskList = async ({ year, month, day }) => {
   return response.data.RESULT;
 };
 
-export const getRoutineTaskList = async ({ year, month, day }) => {
-  const response = await axios.get(
-    `${TODOMATE_API_SERVER_HOST}/task/routine/${year}/${month}/${day}`
-  );
-  return response.data.RESULT;
-};
 
 export const taskFinishedState = async ({ tid }) => {
   const response = await axios.post(`${TODOMATE_API_SERVER_HOST}/task/${tid}`);
   return response.data.RESULT;
+};
+
+//======================== Routine
+export const addRotine =  async (mid, routineDTO) => {
+  console.log("add routine 실행")
+  const response = await axios.post(`${TODOMATE_API_SERVER_HOST}/routines/${mid}`, routineDTO)
+  return response.data;
+}
+
+export const getRoutineTaskList = async ({ year, month, day }) => {
+  const response = await axios.get(
+    `${TODOMATE_API_SERVER_HOST}/routines/${year}/${month}/${day}`
+  );
+  return response.data.RESULT;
+};
+
+export const getRoutine = async ({ tid }) => {
+  const response = await axios.get(`${TODOMATE_API_SERVER_HOST}/${tid}`);
+  return response;
 };
