@@ -16,10 +16,10 @@ export const getTask = async ({ tid }) => {
   return response;
 };
 
-export const updateTask = async ({ taskDTO }) => {
+export const updateTask = async ({ value: value, tid: tid }) => {
+  console.log(tid, value);
   const response = await axios.put(
-    `${TODOMATE_API_SERVER_HOST}/task/update`,
-    taskDTO
+    `${TODOMATE_API_SERVER_HOST}/task/update/${tid}/${value}`
   );
   return response;
 };
