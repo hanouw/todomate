@@ -3,7 +3,6 @@ import axios from "axios";
 const TODOMATE_API_SERVER_HOST = "http://localhost:8099";
 
 export const addTask = async (taskDTO) => {
-  console.log(taskDTO);
   const response = await axios.post(
     `${TODOMATE_API_SERVER_HOST}/task/add`,
     taskDTO
@@ -17,7 +16,6 @@ export const getTask = async ({ tid }) => {
 };
 
 export const updateTask = async ({ value: value, tid: tid }) => {
-  console.log(tid, value);
   const response = await axios.put(
     `${TODOMATE_API_SERVER_HOST}/task/update/${tid}/${value}`
   );
@@ -25,7 +23,6 @@ export const updateTask = async ({ value: value, tid: tid }) => {
 };
 
 export const deleteTask = async ({ tid }) => {
-  console.log(tid);
   const response = await axios.delete(
     `${TODOMATE_API_SERVER_HOST}/task/${tid}`
   );
@@ -48,5 +45,11 @@ export const getRoutineTaskList = async ({ year, month, day }) => {
 
 export const taskFinishedState = async ({ tid }) => {
   const response = await axios.post(`${TODOMATE_API_SERVER_HOST}/task/${tid}`);
+  return response.data.RESULT;
+};
+
+export const getNumOfTask = async ({ mid, year, month }) => {
+  const response = await axios.get(`
+        ${TODOMATE_API_SERVER_HOST}/task/numoftask/${mid}/${year}/${month}`);
   return response.data.RESULT;
 };

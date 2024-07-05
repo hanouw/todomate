@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { getNumOfTask } from "../../api/TodomateApi";
 
 const CalendarSection = ({ callbackFn, refresh }) => {
   const days = ["월", "화", "수", "목", "금", "토", "일"];
 
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [taskList, setTaskList] = useState([]);
 
   useEffect(() => {
+    getNumOfTask({
+      mid: 1,
+      year: currentDate.getFullYear(),
+      month: currentDate.getMonth() + 1,
+    }).then((data) => {
+      setTaskList(data);
+    });
     callbackFn(currentDate);
   }, [currentDate, refresh]);
 
@@ -109,7 +118,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
         {[...Array(startDay)].map((_, index) => (
           <div key={`empty-${index}`} className="text-center p-2"></div>
         ))}
-        {dates.map((date) => (
+        {dates.map((date, index) => (
           <div
             className="grid justify-center place-items-center text-sm mb-1"
             key={date}
@@ -117,11 +126,35 @@ const CalendarSection = ({ callbackFn, refresh }) => {
           >
             <div
               className={`grid place-items-center mb-[1px] h-[23px] w-[23px] rounded-lg ${
-                date === 3 ? "bg-black text-white" : "bg-my-color-gray"
+                taskList[index + 1] == -1
+                  ? "bg-black text-white"
+                  : "bg-my-color-gray"
               }`}
             >
               <span className="font-[Pretendard-SemiBold] text-sm">
-                {date === 1 || date === 3 ? 1 : <></>}
+                {taskList[index + 1] == -1 ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3"
+                    stroke="white"
+                    className="size-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                ) : (
+                  <></>
+                )}
+                {taskList[index + 1] != 0 && taskList[index + 1] != -1 ? (
+                  taskList[index + 1]
+                ) : (
+                  <></>
+                )}
               </span>
             </div>
 

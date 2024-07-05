@@ -225,7 +225,6 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   className="size-6"
                   onClick={() =>
                     deleteTask({ tid: task.tid }).then(() => {
-                      console.log(task.tid);
                       callbackFn({ type: "refresh" });
                     })
                   }
