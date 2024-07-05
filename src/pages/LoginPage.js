@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BasicLayout from '../layouts/BasicLayout';
 import useCustomMove from '../hooks/useCustomMove';
-// import useCustomLogin from '../hooks/useCustomLogin';
+import useCustomLogin from '../hooks/useCustomLogin';
 
 const initState = {
   email: '',
@@ -10,7 +10,7 @@ const initState = {
 
 const LoginPage = () => {
   const { moveToMain } = useCustomMove();
-  // const { execLogin } = useCustomLogin();
+  const { execLogin } = useCustomLogin();
 
   const [loginParam, setLoginParam] = useState({ ...initState });
 
@@ -20,15 +20,15 @@ const LoginPage = () => {
   };
 
   const handleClickLogin = () => {
-    // execLogin(loginParam).then((data) => {
-    //   console.log(data);
-    //   if (data.error) {
-    //     alert('이메일과 비밀번호를 다시 확인하세요!');
-    //   } else {
-    //     alert('로그인 성공!');
-    //     moveToMain();
-    //   }
-    // });
+    execLogin(loginParam).then((data) => {
+      console.log(data);
+      if (data.error) {
+        alert('이메일과 비밀번호를 다시 확인하세요!');
+      } else {
+        alert('로그인 성공!');
+        moveToMain();
+      }
+    });
   };
 
   const inputClassName =
@@ -67,7 +67,7 @@ const LoginPage = () => {
         <div className="space-x-16 font-[Pretendard-Regular] mt-4">
           <button
             className="bg-black text-white text-sm rounded-lg px-6 py-2 justify-center items-center font-[Pretendard-Regular]"
-            // onClick={handleClickLogin}
+            onClick={handleClickLogin}
           >
             확인
           </button>
