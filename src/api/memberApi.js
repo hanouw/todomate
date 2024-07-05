@@ -9,7 +9,7 @@ export const loginPost = async (loginParam) => {
 	form.append("password", loginParam.password);
 
 	const response = await axios.post(
-		`${TODOMATE_API_SERVER_HOST}/members/login`,
+		`${TODOMATE_API_SERVER_HOST}/api/login`,
 		form,
 		header
 	);
