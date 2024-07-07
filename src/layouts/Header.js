@@ -1,4 +1,18 @@
+import { useSelector } from "react-redux";
+import useCustomLogin from "../hooks/useCustomLogin";
+import { Link } from "react-router-dom";
+
 export default function Header() {
+  const loginInfo = useSelector((state) => state.loginSlice);
+  const { execLogout } = useCustomLogin();
+
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("로그아웃 하시겠습니까?");
+    if (isConfirmed) {
+      execLogout();
+      alert("로그아웃 되었습니다.");
+    }
+  };
   return (
     <header className="flex flex-col items-center">
       <div className="max-w-4xl w-full p-4 lg:p-6 border-b-2">
@@ -8,23 +22,33 @@ export default function Header() {
         >
           <div className="flex items-center gap-2">
             <div className="text-xl font-[Pretendard-Bold] select-none">
-              Username
+              {loginInfo.name}
             </div>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
+          <div className="flex flex-1 items-center justify-end gap-x-6">
+          {!loginInfo.name ? (
+            <Link
+              to="/login"
+              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+            >
+              로그인
+            </Link>
+          ) : (
+            <>
+            <button
+              onClick={handleLogout}
+              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+            >
+              로그아웃
+            </button>
+            <button
+              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+            >
+              마이페이지
+            </button>
+            </>
+          )}
+        </div>
         </nav>
       </div>
     </header>

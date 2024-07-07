@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const useCustomMove = () => {
@@ -19,7 +18,7 @@ const useCustomMove = () => {
   };
 
   // 로그인 페이지로 이동
-  const moveToMyLogin = () => {
+  const moveToLogin = () => {
     navigate({ pathname: `/login` });
   };
 
@@ -27,7 +26,7 @@ const useCustomMove = () => {
     moveToBack,
     moveToMain,
     moveToMyPage,
-    moveToMyLogin,
+    moveToLogin,
   };
 };
 

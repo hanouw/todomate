@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from "react";
-import BasicLayout from "../layouts/BasicLayout";
-import CalendarSection from "../components/main/CalendarSection";
-import TasksSection from "../components/main/TasksSection";
-import { addTask, updateTask } from "../api/TodomateApi";
+import React, { useCallback, useEffect, useState } from 'react';
+import BasicLayout from '../layouts/BasicLayout';
+import CalendarSection from '../components/main/CalendarSection';
+import TasksSection from '../components/main/TasksSection';
+import { addTask, updateTask } from '../api/TodomateApi';
+import useCustomLogin from '../hooks/useCustomLogin';
+import useCustomMove from '../hooks/useCustomMove';
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -13,7 +15,7 @@ const MainPage = () => {
   }, []);
 
   const taskIsChanged = async ({ type, value, tid }) => {
-    if (type == "NORMAL") {
+    if (type == 'NORMAL') {
       const taskDTO = {
         finished: false,
         detail: value,
@@ -24,7 +26,7 @@ const MainPage = () => {
       addTask(taskDTO).then(() => {
         setRefresh(!refresh);
       });
-    } else if (type == "MODIFY") {
+    } else if (type == 'MODIFY') {
       updateTask({ value: value, tid, tid }).then(() => {
         setRefresh(!refresh);
       });
@@ -43,6 +45,17 @@ const MainPage = () => {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
+
+  const { isLogin } = useCustomLogin();
+  const { moveToLogin } = useCustomMove();
+
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다');
+      moveToLogin();
+    }
+  }, []);
+
   return (
     <BasicLayout>
       <div className="grid place-items-center">
@@ -51,13 +64,7 @@ const MainPage = () => {
         </div>
         <div className="lg:grid lg:grid-cols-2 max-w-xs lg:max-w-4xl w-full gap-5">
           <CalendarSection callbackFn={monthIsChanged} refresh={refresh} />
-          <TasksSection
-            year={year}
-            month={month}
-            day={day}
-            callbackFn={taskIsChanged}
-            refresh={refresh}
-          />
+          <TasksSection year={year} month={month} day={day} callbackFn={taskIsChanged} refresh={refresh} />
         </div>
       </div>
     </BasicLayout>
