@@ -16,41 +16,34 @@ export const addTask = async (taskDTO) => {
 // };
 
 export const updateTask = async ({ value: value, tid: tid }) => {
-  //=======================================
   const response = await axios.put(
-    `${API_SERVER_HOST}/task/1/update/${tid}/${value}`
+    `${TODOMATE_API_SERVER_HOST}/task/update/${tid}/${value}`
   );
   return response;
 };
 
 export const deleteTask = async ({ tid }) => {
-  //=======================================
-  const response = await axios.delete(`${API_SERVER_HOST}/task/${tid}`);
+  const response = await axios.delete(
+    `${TODOMATE_API_SERVER_HOST}/task/${tid}`
+  );
   return response;
 };
 
-export const getNormalTaskList = async ({ year, month, day }) => {
+export const getNormalTaskList = async ({ mid, year, month, day }) => {
   const response = await axios.get(
-    `${API_SERVER_HOST}/task/${mid}/normal/${year}/${month}/${day}`
-  );
-  return response.data.RESULT;
-};
-
-export const getRoutineTaskList = async ({ year, month, day }) => {
-  const response = await axios.get(
-    `${API_SERVER_HOST}/task/routine/${year}/${month}/${day}`
+    `${TODOMATE_API_SERVER_HOST}/task/${mid}/normal/${year}/${month}/${day}`
   );
   return response.data.RESULT;
 };
 
 export const taskFinishedState = async ({ tid }) => {
-  const response = await axios.post(`${API_SERVER_HOST}/task/${tid}`);
+  const response = await axios.post(`${TODOMATE_API_SERVER_HOST}/task/${tid}`);
   return response.data.RESULT;
 };
 
-export const getNumOfTask = async ({ year, month }) => {
+export const getNumOfTask = async ({ mid, year, month }) => {
   const response = await axios.get(`
-        ${API_SERVER_HOST}/task/numoftask/${year}/${month}`);
+        ${TODOMATE_API_SERVER_HOST}/task/${mid}/numoftask/${year}/${month}`);
   return response.data.RESULT;
 };
 

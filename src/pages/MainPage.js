@@ -52,10 +52,8 @@ const MainPage = () => {
 
   const { moveToLogin } = useCustomMove();
 
-  const loginInfo = useSelector((state) => state.loginSlice);
-
   useEffect(() => {
-    if (loginInfo) {
+    if (!loginInfo) {
       alert("로그인이 필요합니다");
       moveToLogin();
     }

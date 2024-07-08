@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { getNumOfTask } from "../../api/TodomateApi";
+import { useSelector } from "react-redux";
 
 const CalendarSection = ({ callbackFn, refresh }) => {
   const days = ["월", "화", "수", "목", "금", "토", "일"];
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [taskList, setTaskList] = useState([]);
+  const loginInfo = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
     getNumOfTask({
+      mid: loginInfo.mid,
       year: currentDate.getFullYear(),
       month: currentDate.getMonth() + 1,
     }).then((data) => {

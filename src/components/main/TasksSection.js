@@ -18,11 +18,14 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
   const loginInfo = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
-    getNormalTaskList({ year: year, month: month, day: day }).then(
-      (response) => {
-        setNormalList(response);
-      }
-    );
+    getNormalTaskList({
+      mid: loginInfo.mid,
+      year: year,
+      month: month,
+      day: day,
+    }).then((response) => {
+      setNormalList(response);
+    });
     getRoutineTaskList({
       mid: loginInfo.mid || 1,
       year: year,
