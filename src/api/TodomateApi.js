@@ -86,10 +86,16 @@ export const getRoutine = async ({ mid, drId }) => {
 };
 
 export const updateRoutine = async ({ rid, routineDTO }) => {
-  console.log("updateRoutine routine 실행", rid);
   const response = await axios.put(
     `${TODOMATE_API_SERVER_HOST}/routines/${rid}`,
     routineDTO
   );
   return response.data;
 };
+
+export const deleteRoutine = async ({ rid }) => {
+  const response = await axios.delete(
+    `${TODOMATE_API_SERVER_HOST}/routines/${rid}`
+  );
+  return response.data;
+}

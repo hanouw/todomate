@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRoutine, updateRoutine } from '../../api/TodomateApi';
+import { getRoutine, updateRoutine, deleteRoutine } from '../../api/TodomateApi';
 
 const initState = {
   detail: '',
@@ -15,7 +15,6 @@ const RoutineModifyModal = ({ closeModal, callbackFn, drId }) => {
   const [rid, setRid] = useState('');
 
   useEffect(() => {
-    console.log('----drid', drId);
     getRoutine({ mid: loginInfo.mid, drId: drId }).then((data) => {
       setInput({ ...data });
       setRid(data.rid);
@@ -28,14 +27,12 @@ const RoutineModifyModal = ({ closeModal, callbackFn, drId }) => {
   };
 
   const ModifyButtonClicked = () => {
-    console.log('-----rid', rid);
     const startDate = new Date(input.startDate);
     const endDate = new Date(input.endDate);
 
     const gap = (endDate - startDate) / (1000 * 3600 * 24) + 1;
 
     if (gap > 0) {
-      console.log('ModifyButtonClicked', input.rid);
       updateRoutine({ rid: input.rid, routineDTO: input }).then((data) => {
         if (data === 'success') {
           closeModal();
@@ -45,6 +42,15 @@ const RoutineModifyModal = ({ closeModal, callbackFn, drId }) => {
     } else {
       alert('올바른 시작일과 종료일을 입력해주세요');
     }
+  };
+
+  const DeleteButtonClicked = () => {
+    deleteRoutine({ rid: input.rid }).then((data) => {
+      if (data === 'success') {
+        closeModal();
+        callbackFn({ type: 'refresh' });
+      }
+    })
   };
 
   return (
@@ -122,25 +128,22 @@ const RoutineModifyModal = ({ closeModal, callbackFn, drId }) => {
                 ></input>
               </div>
             </div>
-            <button
-              type="button"
-              className="text-black inline-flex items-center bg-gray-300 hover:bg-my-color-darkblue hover:text-white focus:ring-2 focus:outline-none focus:ring-my-color-lightgreen font-['Pretendard-Medium'] rounded-lg text-sm px-5 py-2.5 text-center"
-              onClick={ModifyButtonClicked}
-            >
-              <svg
-                className="me-1 -ms-1 w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="col-span-2 sm:col-span-1 flex justify-center">
+              <button
+                type="button"
+                className="text-black inline-flex items-center bg-gray-300 hover:bg-my-color-darkblue hover:text-white focus:ring-2 focus:outline-none focus:ring-my-color-lightgreen font-['Pretendard-Medium'] rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+                onClick={ModifyButtonClicked}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              루틴 수정하기
-            </button>
+                수정 완료
+              </button>
+              <button
+                type="button"
+                className="text-black inline-flex items-center bg-gray-300 hover:bg-my-color-darkblue hover:text-white focus:ring-2 focus:outline-none focus:ring-my-color-lightgreen font-['Pretendard-Medium'] rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={DeleteButtonClicked}
+              >
+                전체 삭제
+              </button>
+            </div>
           </form>
         </div>
       </div>
