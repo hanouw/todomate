@@ -183,7 +183,10 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
           <></>
         )}
         {tasks.map((task) => (
-          <li key={task.tid} className="flex justify-between py-1 mt-3">
+          <li
+            key={task.tid}
+            className="flex justify-between py-1 mt-3 select-none"
+          >
             <div
               className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
                 task.finished == true ? "bg-black" : "bg-my-color-gray"

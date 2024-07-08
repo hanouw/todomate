@@ -3,10 +3,12 @@ import BasicLayout from "../layouts/BasicLayout";
 import CalendarSection from "../components/main/CalendarSection";
 import TasksSection from "../components/main/TasksSection";
 import { addTask, updateTask } from "../api/TodomateApi";
+import { useSelector } from "react-redux";
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [refresh, setRefresh] = useState(false);
+  const loginInfo = useSelector((state) => state.loginSlice);
 
   const monthIsChanged = useCallback((result) => {
     setCurrentDate(result);
@@ -19,13 +21,16 @@ const MainPage = () => {
         detail: value,
         type: type,
         date: getFormattedDate(),
-        mid: 1,
+        mid: loginInfo.mid ? loginInfo.mid : 1,
       };
       addTask(taskDTO).then(() => {
         setRefresh(!refresh);
       });
     } else if (type == "MODIFY") {
-      updateTask({ value: value, tid, tid }).then(() => {
+      updateTask({
+        value: value,
+        tid: tid,
+      }).then(() => {
         setRefresh(!refresh);
       });
     } else {
