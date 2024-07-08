@@ -3,8 +3,8 @@ import BasicLayout from '../layouts/BasicLayout';
 import CalendarSection from '../components/main/CalendarSection';
 import TasksSection from '../components/main/TasksSection';
 import { addTask, updateTask } from '../api/TodomateApi';
-import useCustomLogin from '../hooks/useCustomLogin';
 import useCustomMove from '../hooks/useCustomMove';
+import { useSelector } from 'react-redux';
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -46,11 +46,13 @@ const MainPage = () => {
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
 
-  const { isLogin } = useCustomLogin();
   const { moveToLogin } = useCustomMove();
 
+  const loginInfo = useSelector((state) => state.loginSlice);
+
+
   useEffect(() => {
-    if (!isLogin) {
+    if (loginInfo) {
       alert('로그인이 필요합니다');
       moveToLogin();
     }

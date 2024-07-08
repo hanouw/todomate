@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
 import { Link } from "react-router-dom";
+import useCustomMove from "../hooks/useCustomMove";
 
 export default function Header() {
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -10,7 +11,7 @@ export default function Header() {
     const isConfirmed = window.confirm("로그아웃 하시겠습니까?");
     if (isConfirmed) {
       execLogout();
-      alert("로그아웃 되었습니다.");
+      
     }
   };
   return (

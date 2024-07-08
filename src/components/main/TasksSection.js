@@ -14,7 +14,7 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
     getNormalTaskList({ year: year, month: month, day: day }).then((response) => {
       setNormalList(response);
     });
-    getRoutineTaskList({ mid: loginInfo.mid, year: year, month: month, day: day }).then(
+    getRoutineTaskList({ mid: loginInfo.mid || 1, year: year, month: month, day: day }).then(
       (response) => {
         setRoutineList(response);
       }
