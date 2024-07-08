@@ -9,7 +9,7 @@ const initState = {
 };
 
 const LoginPage = () => {
-  const { moveToMain } = useCustomMove();
+  const { moveToMain, moveToSignup } = useCustomMove();
   const { execLogin } = useCustomLogin();
 
   const [loginParam, setLoginParam] = useState({ ...initState });
@@ -70,6 +70,12 @@ const LoginPage = () => {
             onClick={handleClickLogin}
           >
             확인
+          </button>
+          <button
+            className="bg-black text-white text-sm rounded-lg px-6 py-2 justify-center items-center font-[Pretendard-Regular]"
+            onClick={moveToSignup}
+          >
+            회원가입
           </button>
         </div>
       </div>

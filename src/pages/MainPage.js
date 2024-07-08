@@ -53,8 +53,8 @@ const MainPage = () => {
   const { moveToLogin } = useCustomMove();
 
   useEffect(() => {
-    if (!loginInfo) {
-      alert("로그인이 필요합니다");
+    if (!loginInfo.name) {
+      alert('로그인이 필요합니다');
       moveToLogin();
     }
   }, []);

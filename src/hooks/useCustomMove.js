@@ -22,11 +22,16 @@ const useCustomMove = () => {
     navigate({ pathname: `/login` });
   };
 
+  const moveToSignup = () => {
+    navigate({pathname: `/signup`})
+  }
+
   return {
     moveToBack,
     moveToMain,
     moveToMyPage,
     moveToLogin,
+    moveToSignup,
   };
 };
 
