@@ -34,7 +34,7 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
     }).then((response) => {
       setRoutineList(response);
     });
-  }, [year, month, day, refresh]);
+  }, [year, month, day, refresh, loginInfo.mid]);
   return (
     <div className="flex flex-col rounded-lg bg-white max-h-[450px] overflow-y-auto pr-3">
       <TaskCategory title="할 일" tasks={normalList} callbackFn={callbackFn} />
@@ -54,7 +54,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   }, [tasks]);
 
   const addTaskClicked = () => {
-    if (inputVal != undefined) {
+    if (inputVal !== undefined) {
       callbackFn({ type: "NORMAL", value: inputVal });
       setShowInputField(false);
       setInputVal(null);
@@ -72,7 +72,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   };
 
   const taskModifyClicked = (tid, originVal) => {
-    if (inputVal == "") {
+    if (inputVal === "") {
       callbackFn({ type: "MODIFY", value: originVal, tid: tid });
     } else {
       callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
@@ -215,12 +215,12 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
               <li key={task.tid} className="flex justify-between py-1 mt-3">
                 <div
                   className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
-                    task.finished == true ? "bg-black" : "bg-my-color-gray"
+                    task.finished === true ? "bg-black" : "bg-my-color-gray"
                   }`}
                   onClick={() => finishedButtonClicked(task.tid)}
                 >
                   {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
-                  {task.finished == true ? (
+                  {task.finished === true ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -241,7 +241,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 </div>
 
                 {/* 수정 클릭 여부 */}
-                {isModify == task.tid ? (
+                {isModify === task.tid ? (
                   <input
                     className="border-b-2 border-my-color-gray ml-2 pl-1 flex-1 font-[Pretendard-Light] w-4/5"
                     placeholder="수정 중..."
@@ -255,7 +255,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   </span>
                 )}
 
-                {isModify == task.tid ? (
+                {isModify === task.tid ? (
                   <div className="flex">
                     <button
                       className="w-8 h-5 mx-2 bg-white rounded-xl border-2 border-black justify-center text-black text-xs font-[Pretendard-Regular] select-none"
@@ -273,7 +273,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 ) : (
                   <></>
                 )}
-                {showThreeDot == task.tid ? (
+                {showThreeDot === task.tid ? (
                   // 점 3개 눌림 여부
                   <div className="flex items-center gap-2">
                     {/* 삭제 버튼 */}
@@ -305,9 +305,10 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6"
-                      onClick={() => (
-                        setIsModify(task.tid), setShowThreeDot(-1)
-                      )}
+                      onClick={() => {
+                        setIsModify(task.tid);
+                        setShowThreeDot(-1);
+                      }}
                     >
                       <path
                         strokeLinecap="round"
@@ -332,7 +333,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     strokeWidth="1.5"
                     stroke="gray"
                     className={`size-6 ${
-                      isModify == task.tid ? "hidden" : "inline"
+                      isModify === task.tid ? "hidden" : "inline"
                     }`}
                     onClick={() => setShowThreeDot(task.tid)}
                   >
@@ -352,12 +353,12 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
               <li key={task.drId} className="flex justify-between py-1 mt-3">
                 <div
                   className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
-                    task.finished == true ? "bg-black" : "bg-my-color-gray"
+                    task.finished === true ? "bg-black" : "bg-my-color-gray"
                   }`}
                   onClick={() => routineFinishedClicked(task.drId)}
                 >
                   {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
-                  {task.finished == true ? (
+                  {task.finished === true ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -380,7 +381,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   {/* 할 일 내용 */}
                   {task.detail}
                 </span>
-                {showThreeDot == task.drId ? (
+                {showThreeDot === task.drId ? (
                   // 점 3개 눌림 여부
                   <div className="flex items-center gap-2">
                     {/* 삭제 버튼 */}
@@ -411,11 +412,11 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6"
-                      onClick={() => (
-                        setIsModifyModalOpen(true),
-                        setShowThreeDot(-1),
-                        setDrId(task.drId)
-                      )}
+                      onClick={() => {
+                        setIsModifyModalOpen(true);
+                        setShowThreeDot(-1);
+                        setDrId(task.drId);
+                      }}
                     >
                       <path
                         strokeLinecap="round"
@@ -440,7 +441,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     strokeWidth="1.5"
                     stroke="gray"
                     className={`size-6 ${
-                      isModify == task.drId ? "hidden" : "inline"
+                      isModify === task.drId ? "hidden" : "inline"
                     }`}
                     onClick={() => setShowThreeDot(task.drId)}
                   >
