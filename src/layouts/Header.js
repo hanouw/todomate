@@ -11,7 +11,7 @@ export default function Header() {
     const isConfirmed = window.confirm("로그아웃 하시겠습니까?");
     if (isConfirmed) {
       execLogout();
-      
+
     }
   };
   return (
@@ -22,34 +22,33 @@ export default function Header() {
           aria-label="Global"
         >
           <div className="flex items-center gap-2">
-            <div className="text-xl font-[Pretendard-Bold] select-none">
-              {loginInfo.name}
-            </div>
+            {loginInfo.name ? (
+              <div className="text-xl font-[Pretendard-Bold] select-none">
+                {loginInfo.name}
+              </div>
+            ) : (
+              <div className="text-xl font-[Pretendard-Bold] select-none">
+                todo mate
+              </div>
+            )}
           </div>
           <div className="flex flex-1 items-center justify-end gap-x-6">
-          {!loginInfo.name ? (
-            <Link
-              to="/login"
-              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
-            >
-              로그인
-            </Link>
-          ) : (
-            <>
-            <button
-              onClick={handleLogout}
-              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
-            >
-              로그아웃
-            </button>
-            <button
-              className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
-            >
-              마이페이지
-            </button>
-            </>
-          )}
-        </div>
+            {loginInfo.name ? (
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+                >
+                  로그아웃
+                </button>
+                <button
+                  className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+                >
+                  마이페이지
+                </button>
+              </>
+            ) : (<></>)}
+          </div>
         </nav>
       </div>
     </header>
