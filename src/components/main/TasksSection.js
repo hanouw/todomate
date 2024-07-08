@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import {
+  dailyRoutineFinished,
+  deleteDailyRoutine,
   deleteTask,
   getNormalTaskList,
   getRoutineTaskList,
   taskFinishedState,
 } from "../../api/TodomateApi";
 import RotineAddModal from "../rotine/RotineAddModal";
+import { useSelector } from "react-redux";
+import RoutineModifyModal from "../rotine/RoutineModifyModal";
 
 const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
   const [normalList, setNormalList] = useState([]);
   const [routineList, setRoutineList] = useState([]);
+
+  const loginInfo = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
     getNormalTaskList({ year: year, month: month, day: day }).then(
@@ -17,11 +23,14 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
         setNormalList(response);
       }
     );
-    getRoutineTaskList({ year: year, month: month, day: day }).then(
-      (response) => {
-        setRoutineList(response);
-      }
-    );
+    getRoutineTaskList({
+      mid: loginInfo.mid || 1,
+      year: year,
+      month: month,
+      day: day,
+    }).then((response) => {
+      setRoutineList(response);
+    });
   }, [year, month, day, refresh]);
   return (
     <div className="flex flex-col rounded-lg bg-white max-h-[450px] overflow-y-auto pr-3">
@@ -40,8 +49,6 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   useEffect(() => {
     setShowInputField(false);
   }, [tasks]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addTaskClicked = () => {
     if (inputVal != undefined) {
@@ -71,9 +78,14 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
   };
 
   // ======================================================= Rotine
-  const rotineAddBtnClicked = () => {
-    console.log("add btn click");
-    setIsModalOpen(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
+  const [drId, setDrId] = useState("");
+
+  const routineFinishedClicked = (drId) => {
+    dailyRoutineFinished({ drId: drId }).then(() => {
+      callbackFn({ type: "refresh" });
+    });
   };
 
   return (
@@ -123,7 +135,19 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             </>
           ) : (
             <>
-              {isModalOpen ? <RotineAddModal /> : <></>}
+              {isAddModalOpen && (
+                <RotineAddModal
+                  closeModal={() => setIsAddModalOpen(false)}
+                  callbackFn={callbackFn}
+                />
+              )}
+              {isModifyModalOpen && (
+                <RoutineModifyModal
+                  closeModal={() => setIsModifyModalOpen(false)}
+                  callbackFn={callbackFn}
+                  drId={drId}
+                />
+              )}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -146,7 +170,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className="size-6"
-                onClick={rotineAddBtnClicked}
+                onClick={() => setIsAddModalOpen(true)}
               >
                 <path
                   strokeLinecap="round"
@@ -182,141 +206,252 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
         ) : (
           <></>
         )}
-        {tasks.map((task) => (
-          <li
-            key={task.tid}
-            className="flex justify-between py-1 mt-3 select-none"
-          >
-            <div
-              className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
-                task.finished == true ? "bg-black" : "bg-my-color-gray"
-              }`}
-              onClick={() => finishedButtonClicked(task.tid)}
-            >
-              {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
-              {task.finished == true ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="3"
-                  stroke="white"
-                  className="size-4"
+        {title === "할 일" ? (
+          <>
+            {tasks.map((task) => (
+              <li key={task.tid} className="flex justify-between py-1 mt-3">
+                <div
+                  className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
+                    task.finished == true ? "bg-black" : "bg-my-color-gray"
+                  }`}
+                  onClick={() => finishedButtonClicked(task.tid)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
-              ) : (
-                <></>
-              )}
-            </div>
+                  {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
+                  {task.finished == true ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="3"
+                      stroke="white"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
+                    </svg>
+                  ) : (
+                    <></>
+                  )}
+                </div>
 
-            {/* 수정 클릭 여부 */}
-            {isModify == task.tid ? (
-              <input
-                className="border-b-2 border-my-color-gray ml-2 pl-1 flex-1 font-[Pretendard-Light] w-4/5"
-                placeholder="수정 중..."
-                defaultValue={task.detail}
-                onChange={inputChange}
-              />
-            ) : (
-              <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
-                {/* 할 일 내용 */}
-                {task.detail}
-              </span>
-            )}
-
-            {isModify == task.tid ? (
-              <div className="flex">
-                <button
-                  className="w-8 h-5 mx-2 bg-white rounded-xl border-2 border-black justify-center text-black text-xs font-[Pretendard-Regular] select-none"
-                  onClick={() => taskModifyClicked(task.tid, task.detail)}
-                >
-                  저장
-                </button>
-                <button
-                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
-                  onClick={() => setIsModify(-1)}
-                >
-                  취소
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
-            {showThreeDot == task.tid ? (
-              // 점 3개 눌림 여부
-              <div className="flex items-center gap-2">
-                {/* 삭제 버튼 */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                  onClick={() =>
-                    deleteTask({ tid: task.tid }).then(() => {
-                      callbackFn({ type: "refresh" });
-                    })
-                  }
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                {/* 수정 클릭 여부 */}
+                {isModify == task.tid ? (
+                  <input
+                    className="border-b-2 border-my-color-gray ml-2 pl-1 flex-1 font-[Pretendard-Light] w-4/5"
+                    placeholder="수정 중..."
+                    defaultValue={task.detail}
+                    onChange={inputChange}
                   />
-                </svg>
+                ) : (
+                  <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
+                    {/* 할 일 내용 */}
+                    {task.detail}
+                  </span>
+                )}
 
-                {/* 수정 버튼 */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                  onClick={() => (setIsModify(task.tid), setShowThreeDot(-1))}
+                {isModify == task.tid ? (
+                  <div className="flex">
+                    <button
+                      className="w-8 h-5 mx-2 bg-white rounded-xl border-2 border-black justify-center text-black text-xs font-[Pretendard-Regular] select-none"
+                      onClick={() => taskModifyClicked(task.tid, task.detail)}
+                    >
+                      저장
+                    </button>
+                    <button
+                      className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
+                      onClick={() => setIsModify(-1)}
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {showThreeDot == task.tid ? (
+                  // 점 3개 눌림 여부
+                  <div className="flex items-center gap-2">
+                    {/* 삭제 버튼 */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                      onClick={() =>
+                        deleteTask({ tid: task.tid }).then(() => {
+                          callbackFn({ type: "refresh" });
+                        })
+                      }
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
+
+                    {/* 수정 버튼 */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                      onClick={() => (
+                        setIsModify(task.tid), setShowThreeDot(-1)
+                      )}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      />
+                    </svg>
+                    {/* 취소 버튼 */}
+                    <button
+                      className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
+                      onClick={() => setShowThreeDot(-1)}
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  //  점 3개
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="gray"
+                    className={`size-6 ${
+                      isModify == task.tid ? "hidden" : "inline"
+                    }`}
+                    onClick={() => setShowThreeDot(task.tid)}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    />
+                  </svg>
+                )}
+              </li>
+            ))}
+          </>
+        ) : (
+          <>
+            {tasks.map((task) => (
+              <li key={task.drId} className="flex justify-between py-1 mt-3">
+                <div
+                  className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
+                    task.finished == true ? "bg-black" : "bg-my-color-gray"
+                  }`}
+                  onClick={() => routineFinishedClicked(task.drId)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                  />
-                </svg>
-                {/* 취소 버튼 */}
-                <button
-                  className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
-                  onClick={() => setShowThreeDot(-1)}
-                >
-                  취소
-                </button>
-              </div>
-            ) : (
-              //  점 3개
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="gray"
-                className={`size-6 ${
-                  isModify == task.tid ? "hidden" : "inline"
-                }`}
-                onClick={() => setShowThreeDot(task.tid)}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                />
-              </svg>
-            )}
-          </li>
-        ))}
+                  {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
+                  {task.finished == true ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="3"
+                      stroke="white"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
+                    </svg>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
+                  {/* 할 일 내용 */}
+                  {task.detail}
+                </span>
+                {showThreeDot == task.drId ? (
+                  // 점 3개 눌림 여부
+                  <div className="flex items-center gap-2">
+                    {/* 삭제 버튼 */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                      onClick={() =>
+                        deleteDailyRoutine({ drId: task.drId }).then(() => {
+                          callbackFn({ type: "refresh" });
+                        })
+                      }
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
+                    {/* 수정 버튼 */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                      onClick={() => (
+                        setIsModifyModalOpen(true),
+                        setShowThreeDot(-1),
+                        setDrId(task.drId)
+                      )}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      />
+                    </svg>
+                    {/* 취소 버튼 */}
+                    <button
+                      className="w-8 h-5 text-white rounded-xl justify-center bg-black text-xs font-[Pretendard-Regular] select-none"
+                      onClick={() => setShowThreeDot(-1)}
+                    >
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  //  점 3개
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="gray"
+                    className={`size-6 ${
+                      isModify == task.drId ? "hidden" : "inline"
+                    }`}
+                    onClick={() => setShowThreeDot(task.drId)}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    />
+                  </svg>
+                )}
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </div>
   );

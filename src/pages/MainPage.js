@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import BasicLayout from "../layouts/BasicLayout";
 import CalendarSection from "../components/main/CalendarSection";
 import TasksSection from "../components/main/TasksSection";
 import { addTask, updateTask } from "../api/TodomateApi";
+import useCustomMove from "../hooks/useCustomMove";
 import { useSelector } from "react-redux";
 
 const MainPage = () => {
@@ -48,6 +49,18 @@ const MainPage = () => {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
+
+  const { moveToLogin } = useCustomMove();
+
+  const loginInfo = useSelector((state) => state.loginSlice);
+
+  useEffect(() => {
+    if (loginInfo) {
+      alert("로그인이 필요합니다");
+      moveToLogin();
+    }
+  }, []);
+
   return (
     <BasicLayout>
       <div className="grid place-items-center">
