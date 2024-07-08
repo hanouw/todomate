@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import BasicLayout from '../layouts/BasicLayout';
 import { register } from '../api/memberApi';
+import useCustomLogin from '../hooks/useCustomLogin';
+import useCustomMove from '../hooks/useCustomMove';
 
 const initState = {
   email: '',
@@ -12,6 +14,9 @@ const initState = {
 const SignupPage = () => {
   const [inputVal, setInputVal] = useState(initState);
   const [emailValid, setEmailValid] = useState(false);
+
+  const { execLogin } = useCustomLogin();
+  const { moveToMain } = useCustomMove()
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -70,6 +75,8 @@ const SignupPage = () => {
         alert('이미 존재하는 회원입니다. 로그인을 해주세요.');
       } else {
         alert(response + '님, 환영합니다!');
+        execLogin()
+        moveToMain()
       }
     }).catch((error) => {
       console.error('회원가입 에러:', error);
