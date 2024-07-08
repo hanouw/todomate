@@ -1,33 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import BasicLayout from '../layouts/BasicLayout';
-import CalendarSection from '../components/main/CalendarSection';
-import TasksSection from '../components/main/TasksSection';
-import { addTask, updateTask } from '../api/TodomateApi';
-import useCustomMove from '../hooks/useCustomMove';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from "react";
+import BasicLayout from "../layouts/BasicLayout";
+import CalendarSection from "../components/main/CalendarSection";
+import TasksSection from "../components/main/TasksSection";
+import { addTask, updateTask } from "../api/TodomateApi";
+import useCustomMove from "../hooks/useCustomMove";
+import { useSelector } from "react-redux";
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [refresh, setRefresh] = useState(false);
+  const loginInfo = useSelector((state) => state.loginSlice);
 
   const monthIsChanged = useCallback((result) => {
     setCurrentDate(result);
   }, []);
 
   const taskIsChanged = async ({ type, value, tid }) => {
-    if (type == 'NORMAL') {
+    if (type == "NORMAL") {
       const taskDTO = {
         finished: false,
         detail: value,
         type: type,
         date: getFormattedDate(),
-        mid: 1,
+        mid: loginInfo.mid ? loginInfo.mid : 1,
       };
       addTask(taskDTO).then(() => {
         setRefresh(!refresh);
       });
-    } else if (type == 'MODIFY') {
-      updateTask({ value: value, tid, tid }).then(() => {
+    } else if (type == "MODIFY") {
+      updateTask({
+        value: value,
+        tid: tid,
+      }).then(() => {
         setRefresh(!refresh);
       });
     } else {
@@ -48,9 +52,6 @@ const MainPage = () => {
 
   const { moveToLogin } = useCustomMove();
 
-  const loginInfo = useSelector((state) => state.loginSlice);
-
-
   useEffect(() => {
     if (!loginInfo.name) {
       alert('로그인이 필요합니다');
@@ -66,7 +67,13 @@ const MainPage = () => {
         </div>
         <div className="lg:grid lg:grid-cols-2 max-w-xs lg:max-w-4xl w-full gap-5">
           <CalendarSection callbackFn={monthIsChanged} refresh={refresh} />
-          <TasksSection year={year} month={month} day={day} callbackFn={taskIsChanged} refresh={refresh} />
+          <TasksSection
+            year={year}
+            month={month}
+            day={day}
+            callbackFn={taskIsChanged}
+            refresh={refresh}
+          />
         </div>
       </div>
     </BasicLayout>

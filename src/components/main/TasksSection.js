@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { dailyRoutineFinished, deleteDailyRoutine, deleteTask, getNormalTaskList, getRoutineTaskList, taskFinishedState } from '../../api/TodomateApi';
-import RotineAddModal from '../rotine/RotineAddModal';
-import { useSelector } from 'react-redux';
-import RoutineModifyModal from '../rotine/RoutineModifyModal';
+import React, { useEffect, useState } from "react";
+import {
+  dailyRoutineFinished,
+  deleteDailyRoutine,
+  deleteTask,
+  getNormalTaskList,
+  getRoutineTaskList,
+  taskFinishedState,
+} from "../../api/TodomateApi";
+import RotineAddModal from "../rotine/RotineAddModal";
+import { useSelector } from "react-redux";
+import RoutineModifyModal from "../rotine/RoutineModifyModal";
 
 const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
   const [normalList, setNormalList] = useState([]);
@@ -11,14 +18,22 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
   const loginInfo = useSelector((state) => state.loginSlice);
 
   useEffect(() => {
-    getNormalTaskList({ year: year, month: month, day: day }).then((response) => {
+    getNormalTaskList({
+      mid: loginInfo.mid,
+      year: year,
+      month: month,
+      day: day,
+    }).then((response) => {
       setNormalList(response);
     });
-    getRoutineTaskList({ mid: loginInfo.mid || 1, year: year, month: month, day: day }).then(
-      (response) => {
-        setRoutineList(response);
-      }
-    );
+    getRoutineTaskList({
+      mid: loginInfo.mid || 1,
+      year: year,
+      month: month,
+      day: day,
+    }).then((response) => {
+      setRoutineList(response);
+    });
   }, [year, month, day, refresh]);
   return (
     <div className="flex flex-col rounded-lg bg-white max-h-[450px] overflow-y-auto pr-3">
@@ -38,10 +53,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
     setShowInputField(false);
   }, [tasks]);
 
-
   const addTaskClicked = () => {
     if (inputVal != undefined) {
-      callbackFn({ type: 'NORMAL', value: inputVal });
+      callbackFn({ type: "NORMAL", value: inputVal });
       setShowInputField(false);
       setInputVal(null);
     }
@@ -53,15 +67,15 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
 
   const finishedButtonClicked = (tid) => {
     taskFinishedState({ tid: tid }).then(() => {
-      callbackFn({ type: 'refresh' });
+      callbackFn({ type: "refresh" });
     });
   };
 
   const taskModifyClicked = (tid, originVal) => {
-    if (inputVal == '') {
-      callbackFn({ type: 'MODIFY', value: originVal, tid: tid });
+    if (inputVal == "") {
+      callbackFn({ type: "MODIFY", value: originVal, tid: tid });
     } else {
-      callbackFn({ type: 'MODIFY', value: inputVal, tid: tid });
+      callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
     }
     setIsModify(-1);
   };
@@ -73,21 +87,27 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
 
   const routineFinishedClicked = (drId) => {
     dailyRoutineFinished({ drId: drId }).then(() => {
-      callbackFn({ type: 'refresh' });
+      callbackFn({ type: "refresh" });
     });
   };
-
 
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2 py-1 border-b-2 w-full border-gray-800">
-          {title === '할 일' ? (
+          {title === "할 일" ? (
             <>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" className="size-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="gray"
+                className="size-5"
+              >
                 <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
               </svg>
-              <div className="font-[Pretendard-SemiBold] text-base select-none">{title}</div>
+              <div className="font-[Pretendard-SemiBold] text-base select-none">
+                {title}
+              </div>
               {!showInputField ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -118,16 +138,34 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
             </>
           ) : (
             <>
-              {isAddModalOpen && <RotineAddModal closeModal={() => setIsAddModalOpen(false)} callbackFn={callbackFn} />}
-              {isModifyModalOpen && <RoutineModifyModal closeModal={() => setIsModifyModalOpen(false)} callbackFn={callbackFn} drId={drId}/>}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" className="size-6">
+              {isAddModalOpen && (
+                <RotineAddModal
+                  closeModal={() => setIsAddModalOpen(false)}
+                  callbackFn={callbackFn}
+                />
+              )}
+              {isModifyModalOpen && (
+                <RoutineModifyModal
+                  closeModal={() => setIsModifyModalOpen(false)}
+                  callbackFn={callbackFn}
+                  drId={drId}
+                />
+              )}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="gray"
+                className="size-6"
+              >
                 <path
                   fillRule="evenodd"
                   d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
                   clipRule="evenodd"
                 />
               </svg>
-              <div className="font-[Pretendard-SemiBold] text-base select-none">{title}</div>
+              <div className="font-[Pretendard-SemiBold] text-base select-none">
+                {title}
+              </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -151,7 +189,11 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
         {/* 새 할일 작성 위한 Input Field 여부 */}
         {showInputField ? (
           <div className="flex py-1 mt-3 justify-between">
-            <div className={'h-[23px] w-[23px] grid place-items-center rounded-lg bg-my-color-gray'}></div>
+            <div
+              className={
+                "h-[23px] w-[23px] grid place-items-center rounded-lg bg-my-color-gray"
+              }
+            ></div>
             <input
               className="border-b-2 border-my-color-gray text-sm ml-3 w-4/5"
               placeholder="새 할일을 입력하세요"
@@ -167,13 +209,13 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
         ) : (
           <></>
         )}
-        {title === '할 일' ? (
+        {title === "할 일" ? (
           <>
             {tasks.map((task) => (
               <li key={task.tid} className="flex justify-between py-1 mt-3">
                 <div
                   className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
-                    task.finished == true ? 'bg-black' : 'bg-my-color-gray'
+                    task.finished == true ? "bg-black" : "bg-my-color-gray"
                   }`}
                   onClick={() => finishedButtonClicked(task.tid)}
                 >
@@ -187,7 +229,11 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       stroke="white"
                       className="size-4"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
                     </svg>
                   ) : (
                     <></>
@@ -240,7 +286,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       className="size-6"
                       onClick={() =>
                         deleteTask({ tid: task.tid }).then(() => {
-                          callbackFn({ type: 'refresh' });
+                          callbackFn({ type: "refresh" });
                         })
                       }
                     >
@@ -259,7 +305,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6"
-                      onClick={() => (setIsModify(task.tid), setShowThreeDot(-1))}
+                      onClick={() => (
+                        setIsModify(task.tid), setShowThreeDot(-1)
+                      )}
                     >
                       <path
                         strokeLinecap="round"
@@ -283,7 +331,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="gray"
-                    className={`size-6 ${isModify == task.tid ? 'hidden' : 'inline'}`}
+                    className={`size-6 ${
+                      isModify == task.tid ? "hidden" : "inline"
+                    }`}
                     onClick={() => setShowThreeDot(task.tid)}
                   >
                     <path
@@ -302,7 +352,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
               <li key={task.drId} className="flex justify-between py-1 mt-3">
                 <div
                   className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
-                    task.finished == true ? 'bg-black' : 'bg-my-color-gray'
+                    task.finished == true ? "bg-black" : "bg-my-color-gray"
                   }`}
                   onClick={() => routineFinishedClicked(task.drId)}
                 >
@@ -316,16 +366,20 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       stroke="white"
                       className="size-4"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
                     </svg>
                   ) : (
                     <></>
                   )}
                 </div>
                 <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
-                    {/* 할 일 내용 */}
-                    {task.detail}
-                  </span>
+                  {/* 할 일 내용 */}
+                  {task.detail}
+                </span>
                 {showThreeDot == task.drId ? (
                   // 점 3개 눌림 여부
                   <div className="flex items-center gap-2">
@@ -339,7 +393,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       className="size-6"
                       onClick={() =>
                         deleteDailyRoutine({ drId: task.drId }).then(() => {
-                          callbackFn({ type: 'refresh' });
+                          callbackFn({ type: "refresh" });
                         })
                       }
                     >
@@ -357,7 +411,11 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                       strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6"
-                      onClick={() => (setIsModifyModalOpen(true), setShowThreeDot(-1), setDrId(task.drId))}
+                      onClick={() => (
+                        setIsModifyModalOpen(true),
+                        setShowThreeDot(-1),
+                        setDrId(task.drId)
+                      )}
                     >
                       <path
                         strokeLinecap="round"
@@ -381,7 +439,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="gray"
-                    className={`size-6 ${isModify == task.drId ? 'hidden' : 'inline'}`}
+                    className={`size-6 ${
+                      isModify == task.drId ? "hidden" : "inline"
+                    }`}
                     onClick={() => setShowThreeDot(task.drId)}
                   >
                     <path
