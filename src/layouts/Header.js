@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
-import useCustomMove from "../hooks/useCustomMove";
 
 export default function Header() {
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -39,13 +38,13 @@ export default function Header() {
                 >
                   로그아웃
                 </button>
-                <button
-                  className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
-                >
+                <button className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900">
                   마이페이지
                 </button>
               </>
-            ) : (<></>)}
+            ) : (
+              <></>
+            )}
           </div>
         </nav>
       </div>
