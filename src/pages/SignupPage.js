@@ -76,8 +76,12 @@ const SignupPage = () => {
           alert("이미 존재하는 회원입니다. 로그인을 해주세요.");
         } else {
           alert(response + "님, 환영합니다!");
-          execLogin();
-          moveToMain();
+          execLogin({
+            email: inputVal.email,
+            password: inputVal.password,
+          }).then((data) => {
+            moveToMain();
+          });
         }
       })
       .catch((error) => {
