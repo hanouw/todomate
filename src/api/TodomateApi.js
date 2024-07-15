@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const TODOMATE_API_SERVER_HOST = "http://13.125.110.108:8099";
+
+import { TODOMATE_API_SERVER_HOST } from "./memberApi";
 
 export const addTask = async (taskDTO) => {
   const response = await axios.post(

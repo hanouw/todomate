@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
+import useCustomMove from "../hooks/useCustomMove";
 
 export default function Header() {
   const loginInfo = useSelector((state) => state.loginSlice);
@@ -20,18 +21,12 @@ export default function Header() {
           aria-label="Global"
         >
           <div className="flex items-center gap-2">
-            {loginInfo.name ? (
-              <div className="text-xl font-[Pretendard-Bold] select-none">
-                {loginInfo.name}
-              </div>
-            ) : (
-              <div className="text-xl font-[Pretendard-Bold] select-none">
-                todo mate
-              </div>
-            )}
+            <div className="text-xl font-[Pretendard-Bold] select-none">
+              todo mate
+            </div>
           </div>
           <div className="flex flex-1 items-center justify-end gap-x-6">
-            {loginInfo.name ? (
+            {loginInfo.email ? (
               <>
                 <button
                   onClick={handleLogout}

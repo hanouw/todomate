@@ -53,11 +53,11 @@ const MainPage = () => {
   const { moveToLogin } = useCustomMove();
 
   useEffect(() => {
-    if (!loginInfo.name) {
+    if (!loginInfo.email) {
       alert("로그인이 필요합니다");
       moveToLogin();
     }
-  }, [loginInfo.name, moveToLogin]);
+  }, [loginInfo.email]);
 
   return (
     <BasicLayout>
