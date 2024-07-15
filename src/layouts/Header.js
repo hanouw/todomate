@@ -5,6 +5,7 @@ import useCustomMove from "../hooks/useCustomMove";
 export default function Header() {
   const loginInfo = useSelector((state) => state.loginSlice);
   const { execLogout } = useCustomLogin();
+  const { moveToMyPage } = useCustomMove()
 
   const handleLogout = () => {
     const isConfirmed = window.confirm("로그아웃 하시겠습니까?");
@@ -41,6 +42,7 @@ export default function Header() {
                 </button>
                 <button
                   className="hidden lg:block lg:text-base font-['Pretendard-SemiBold'] lg:leading-6 lg:text-gray-900"
+                  onClick={() => moveToMyPage()}
                 >
                   마이페이지
                 </button>
