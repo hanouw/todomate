@@ -16,7 +16,7 @@ const MainPage = () => {
   }, []);
 
   const taskIsChanged = async ({ type, value, tid }) => {
-    if (type == "NORMAL") {
+    if (type === "NORMAL") {
       const taskDTO = {
         finished: false,
         detail: value,
@@ -27,7 +27,7 @@ const MainPage = () => {
       addTask(taskDTO).then(() => {
         setRefresh(!refresh);
       });
-    } else if (type == "MODIFY") {
+    } else if (type === "MODIFY") {
       updateTask({
         value: value,
         tid: tid,
@@ -54,10 +54,10 @@ const MainPage = () => {
 
   useEffect(() => {
     if (!loginInfo.name) {
-      alert('로그인이 필요합니다');
+      alert("로그인이 필요합니다");
       moveToLogin();
     }
-  }, []);
+  }, [loginInfo.name, moveToLogin]);
 
   return (
     <BasicLayout>
