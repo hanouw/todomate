@@ -11,7 +11,7 @@ const CalendarSection = ({ callbackFn, refresh }) => {
 
   useEffect(() => {
     getNumOfTask({
-      mid: loginInfo.mid,
+      mid: loginInfo.mid || 1,
       year: currentDate.getFullYear(),
       month: currentDate.getMonth() + 1,
     }).then((data) => {

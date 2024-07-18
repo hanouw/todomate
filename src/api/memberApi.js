@@ -30,8 +30,10 @@ export const register = async (val) => {
   return response.data;
 };
 
-export const modify = async (data) => {
-  console.log("modify 실행", data);
-  const response = await axios.put(`${TODOMATE_API_SERVER_HOST}/members`, data);
+export const deleteMember = async (mid) => {
+  console.log("deleteMember 실행");
+  const response = await axios.delete(
+    `${TODOMATE_API_SERVER_HOST}/members/${mid}`
+  );
   return response.data;
 };

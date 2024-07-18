@@ -29,6 +29,12 @@ const loginSlice = createSlice({
 	name: "loginSlice",
 	initialState: getMemberCookie() || initState,
 	reducers: {
+		login: (state, action) => {
+      const data = action.payload;
+      setCookie("member", JSON.stringify(data), 1);
+      // 새로운 리덕스 스토어에 수정할 새로운 상태값 리턴
+      return data;
+    },
     logout: (state, action) => {
 			console.log("loginSlice logout 실행")
 			removeCookie("member");
@@ -57,7 +63,7 @@ const loginSlice = createSlice({
 });
 
 // 액션크리에이터 외부로 내보내기
-export const { logout } = loginSlice.actions;
+export const { login, logout } = loginSlice.actions;
 
 // 리듀서 내보내기 -> configureStore에 등록가능하도록
 export default loginSlice.reducer;

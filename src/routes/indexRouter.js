@@ -3,9 +3,10 @@ import { Suspense, lazy } from "react";
 import LoadingPage from "../components/common/LoadingPage";
 
 const Main = lazy(() => import("../pages/MainPage"));
-const MyPage = lazy(() => import("../pages/MainPage"));
-const Login = lazy(()=> import("../pages/LoginPage"))
-const Signup = lazy(()=> import("../pages/SignupPage"))
+const MyPage = lazy(() => import("../pages/MyPage"));
+const Login = lazy(() => import("../pages/LoginPage"))
+const Signup = lazy(() => import("../pages/SignupPage"))
+const KakaoRedirect = lazy(() => import("../pages/KakaoRedirect"))
 
 // 경로 매핑하는 곳 (root)
 const Router = () => {
@@ -39,6 +40,14 @@ const Router = () => {
       element: (
         <Suspense fallback={<LoadingPage />}>
           <Signup />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/redirect",
+      element: (
+        <Suspense fallback={<LoadingPage />}>
+          <KakaoRedirect />
         </Suspense>
       ),
     },

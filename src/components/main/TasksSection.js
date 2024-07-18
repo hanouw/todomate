@@ -19,7 +19,7 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
 
   useEffect(() => {
     getNormalTaskList({
-      mid: loginInfo.mid,
+      mid: loginInfo.mid || 1,
       year: year,
       month: month,
       day: day,
