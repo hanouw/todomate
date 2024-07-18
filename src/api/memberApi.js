@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const TODOMATE_API_SERVER_HOST = "http://13.125.110.108:8099";
+// export const TODOMATE_API_SERVER_HOST = "http://13.125.110.108:8099";
+export const TODOMATE_API_SERVER_HOST = "http://localhost:8099";
 
 export const loginPost = async (loginParam) => {
   const header = { Headers: { "Content-Type": "x-www-form-urlencoded" } };
