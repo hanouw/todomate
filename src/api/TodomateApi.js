@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 import { TODOMATE_API_SERVER_HOST } from "./memberApi";
 
 export const addTask = async (taskDTO) => {
@@ -99,4 +98,4 @@ export const deleteRoutine = async ({ rid }) => {
     `${TODOMATE_API_SERVER_HOST}/routines/${rid}`
   );
   return response.data;
-}
+};
