@@ -1,6 +1,6 @@
 services:
   react:
-    container_name: todomate
+    container_name: todomatefront
     build:
       context: ./
       dockerfile: dockerfile
