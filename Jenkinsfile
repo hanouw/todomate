@@ -7,7 +7,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Git 저장소에서 소스 코드 체크아웃
-                git branch: 'master', url: 'https://github.com/Goldenhyo/todomatefront.git'
+                git branch: 'master', url: 'https://github.com/hanouw/todomate.git'
             }
         }
         stage('Build') {
