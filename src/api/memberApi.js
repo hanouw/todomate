@@ -39,10 +39,10 @@ export const deleteMember = async (mid) => {
   return response.data;
 };
 
-export const searchFriends = async (startsWith) => {
+export const searchFriends = async ({ mid, startsWith }) => {
   console.log("searchFriends 친구찾기 실행");
   const response = await axios.get(
-    `${TODOMATE_API_SERVER_HOST}/members/searchfriends/${startsWith}`
+    `${TODOMATE_API_SERVER_HOST}/members/searchfriends/${mid}/${startsWith}`
   );
   return response.data;
 };
