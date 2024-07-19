@@ -5,11 +5,20 @@ import TasksSection from "../components/main/TasksSection";
 import { addTask, updateTask } from "../api/TodomateApi";
 import useCustomMove from "../hooks/useCustomMove";
 import { useSelector } from "react-redux";
+import {
+  friendAccept,
+  friendBanned,
+  getFriendRequest,
+  getFriends,
+} from "../api/memberApi";
 
 const MainPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [refresh, setRefresh] = useState(false);
   const loginInfo = useSelector((state) => state.loginSlice);
+  const [friends, setFriends] = useState([]);
+  const [friendRequest, setFriendRequest] = useState([]);
+  const [showFriends, setShowFriends] = useState(false);
 
   const monthIsChanged = useCallback((result) => {
     setCurrentDate(result);
@@ -57,13 +66,149 @@ const MainPage = () => {
       alert("로그인이 필요합니다");
       moveToLogin();
     }
-  }, [loginInfo.email]);
+    getFriends(loginInfo.mid).then((data) => {
+      setFriends(data.RESULT);
+      console.log(data);
+    });
+    getFriendRequest(loginInfo.mid).then((data) => {
+      setFriendRequest(data.RESULT);
+      console.log(data);
+    });
+  }, [loginInfo.email, showFriends]);
 
   return (
     <BasicLayout>
-      <div className="grid place-items-center">
-        <div className="flex justify-center w-full p-4 lg:p-16 select-none">
-          <div className="text-xl lg:text-2xl font-[Pretendard-Bold]">{`${year}년 ${month}월 ${day}일`}</div>
+      <div className="grid place-items-center mb-20">
+        <div className="grid justify-center w-full p-4 lg:p-16 select-none">
+          <div className="flex justify-center items-center">
+            <div className="text-xl lg:text-2xl font-[Pretendard-Bold]">{`${year}년 ${month}월 ${day}일`}</div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6 ml-5 cursor-pointer"
+              onClick={() => {
+                setShowFriends(!showFriends);
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+              />
+            </svg>
+          </div>
+          <div className="font-[Pretendard-Ligth] text-base lg:text-lg">
+            {loginInfo.email}의 Todo
+          </div>
+          {/* 친구 목록 */}
+          <div
+            className={`flex justify-between absolute z-10 mt-24 max-w-4xl w-full bg-white rounded-md shadow-lg overflow-hidden ${
+              showFriends ? "border border-gray-300 max-h-60" : "max-h-0"
+            }`}
+          >
+            <div className="p-4 items-center text-center border-r w-full">
+              <div className="font-[Pretendard-Bold] border-b select-none pb-2">
+                친구 목록
+              </div>
+              {friends.map((item, index) => (
+                <div
+                  className="flex justify-between font-[Pretendard-Base] select-none pt-2"
+                  key={index}
+                >
+                  {item.name}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="size-6 cursor-pointer"
+                    onClick={() => {
+                      friendBanned({
+                        bymid: loginInfo.mid,
+                        tomid: item.mid,
+                      }).then((data) => {
+                        setRefresh(!refresh);
+                        console.log(data);
+                      });
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"
+                    />
+                  </svg>
+                </div>
+              ))}
+            </div>
+            <div className="p-4 text-center border-l w-full">
+              <div className="font-[Pretendard-Bold] border-b select-none pb-2">
+                친구 요청
+              </div>
+              {friendRequest.map((item, index) => (
+                <div
+                  className="flex justify-between font-[Pretendard-Base] select-none p-2"
+                  key={index}
+                >
+                  {item.name}
+                  <div className="flex gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-6 cursor-pointer"
+                      onClick={() => {
+                        friendAccept({
+                          bymid: loginInfo.mid,
+                          tomid: item.mid,
+                          tf: true,
+                        }).then((data) => {
+                          setRefresh(!refresh);
+                          console.log(data);
+                        });
+                      }}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="size-6 cursor-pointer"
+                      onClick={() => {
+                        friendAccept({
+                          bymid: loginInfo.mid,
+                          tomid: item.mid,
+                          tf: false,
+                        }).then((data) => {
+                          setRefresh(!refresh);
+                          console.log(data);
+                        });
+                      }}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="lg:grid lg:grid-cols-2 max-w-xs lg:max-w-4xl w-full gap-5">
           <CalendarSection callbackFn={monthIsChanged} refresh={refresh} />

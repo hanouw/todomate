@@ -249,10 +249,20 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     onChange={inputChange}
                   />
                 ) : (
-                  <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
-                    {/* 할 일 내용 */}
-                    {task.detail}
-                  </span>
+                  <>
+                    <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light] hidden lg:inline">
+                      {/*모니터 할 일 내용 */}
+                      {task.detail.length > 30
+                        ? task.detail.slice(0, 30) + "..."
+                        : task.detail}
+                    </span>
+                    <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light] inline lg:hidden">
+                      {/*모바일 할 일 내용 */}
+                      {task.detail.length > 15
+                        ? task.detail.slice(0, 15) + "..."
+                        : task.detail}
+                    </span>
+                  </>
                 )}
 
                 {isModify === task.tid ? (
@@ -377,9 +387,17 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     <></>
                   )}
                 </div>
-                <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light]">
-                  {/* 할 일 내용 */}
-                  {task.detail}
+                <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light] hidden lg:inline">
+                  {/* 모니터 루틴 내용 */}
+                  {task.detail.length > 30
+                    ? task.detail.slice(0, 30) + "..."
+                    : task.detail}
+                </span>
+                <span className="pl-3 rounded-lg flex-1 font-[Pretendard-Light] inline lg:hidden">
+                  {/* 모바일 루틴 내용 */}
+                  {task.detail.length > 15
+                    ? task.detail.slice(0, 15) + "..."
+                    : task.detail}
                 </span>
                 {showThreeDot === task.drId ? (
                   // 점 3개 눌림 여부
