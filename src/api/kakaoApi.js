@@ -5,7 +5,9 @@ import { TODOMATE_API_SERVER_HOST } from "./memberApi";
 const rest_api_key = `419f214fb57dad01e69ef8925cc56a09`;
 // RedirectURI
 // const redirect_uri = `http://3.36.84.228:3001/redirect`;
-const redirect_uri = `http://localhost:3000/redirect`;
+const redirect_uri = `http://13.125.110.108:3000/redirectt`;
+// const redirect_uri = `http://localhost:3000/redirect`;
+
 // 카카오 인가 코드 요청 경로
 const auth_code_path = `https://kauth.kakao.com/oauth/authorize`;
 // 카카오 Access Token 요청 경로
