@@ -11,7 +11,7 @@ import RotineAddModal from "../rotine/RotineAddModal";
 import { useSelector } from "react-redux";
 import RoutineModifyModal from "../rotine/RoutineModifyModal";
 
-const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
+const TasksSection = ({ year, month, day, pageOwner, callbackFn, refresh }) => {
   const [normalList, setNormalList] = useState([]);
   const [routineList, setRoutineList] = useState([]);
 
@@ -19,7 +19,7 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
 
   useEffect(() => {
     getNormalTaskList({
-      mid: loginInfo.mid || 1,
+      mid: pageOwner.mid || 1,
       year: year,
       month: month,
       day: day,
@@ -27,23 +27,33 @@ const TasksSection = ({ year, month, day, callbackFn, refresh }) => {
       setNormalList(response);
     });
     getRoutineTaskList({
-      mid: loginInfo.mid || 1,
+      mid: pageOwner.mid || 1,
       year: year,
       month: month,
       day: day,
     }).then((response) => {
       setRoutineList(response);
     });
-  }, [year, month, day, refresh, loginInfo.mid]);
+  }, [year, month, day, refresh, pageOwner]);
   return (
     <div className="flex flex-col rounded-lg bg-white max-h-[450px] overflow-y-auto pr-3">
-      <TaskCategory title="할 일" tasks={normalList} callbackFn={callbackFn} />
-      <TaskCategory title="루틴" tasks={routineList} callbackFn={callbackFn} />
+      <TaskCategory
+        title="할 일"
+        tasks={normalList}
+        callbackFn={callbackFn}
+        isMine={loginInfo.mid == pageOwner.mid}
+      />
+      <TaskCategory
+        title="루틴"
+        tasks={routineList}
+        callbackFn={callbackFn}
+        isMine={loginInfo.mid == pageOwner.mid}
+      />
     </div>
   );
 };
 
-const TaskCategory = ({ title, tasks, callbackFn }) => {
+const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
   const [showInputField, setShowInputField] = useState(false);
   const [showThreeDot, setShowThreeDot] = useState(-1);
   const [isModify, setIsModify] = useState(-1);
@@ -101,7 +111,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="gray"
-                className="size-5"
+                className={`size-5 ${isMine ? "inline" : "hidden"}`}
               >
                 <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
               </svg>
@@ -115,7 +125,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="size-6"
+                  className={`size-6 ${isMine ? "inline" : "hidden"}`}
                   onClick={() => {
                     setShowInputField(!showInputField);
                     setShowThreeDot(-1);
@@ -155,7 +165,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="gray"
-                className="size-6"
+                className={`size-6 ${isMine ? "inline" : "hidden"}`}
               >
                 <path
                   fillRule="evenodd"
@@ -172,7 +182,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-6"
+                className={`size-6 ${isMine ? "inline" : "hidden"}`}
                 onClick={() => setIsAddModalOpen(true)}
               >
                 <path
@@ -217,7 +227,9 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                   className={`h-[23px] w-[23px] grid place-items-center rounded-lg ${
                     task.finished === true ? "bg-black" : "bg-my-color-gray"
                   }`}
-                  onClick={() => finishedButtonClicked(task.tid)}
+                  onClick={() => {
+                    isMine && finishedButtonClicked(task.tid);
+                  }}
                 >
                   {/* 완료 여부 검은 체크박스 / 회색 체크박스 */}
                   {task.finished === true ? (
@@ -344,7 +356,7 @@ const TaskCategory = ({ title, tasks, callbackFn }) => {
                     stroke="gray"
                     className={`size-6 ${
                       isModify === task.tid ? "hidden" : "inline"
-                    }`}
+                    } ${isMine ? "inline" : "hidden"}`}
                     onClick={() => setShowThreeDot(task.tid)}
                   >
                     <path

@@ -15,14 +15,17 @@ export default function Header() {
   const handleInputChange = (event) => {
     setInputVal(event.target.value);
     if (inputVal != "") {
-      searchFriends(inputVal).then((data) => {
-        setFilteredItems(data.RESULT);
-        console.log(filteredItems);
-      });
+      searchFriends({ mid: loginInfo.mid, startsWith: inputVal }).then(
+        (data) => {
+          setFilteredItems(data.RESULT);
+          console.log(filteredItems);
+        }
+      );
     }
   };
 
   const handleItemClick = (item) => {
+    alert("요청되었습니다.");
     friendRequest({ bymid: loginInfo.mid, tomid: item }).then((data) => {
       // 친구 클릭됨
       setIsClicked(false);
