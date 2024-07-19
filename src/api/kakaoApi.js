@@ -2,7 +2,7 @@ import axios from "axios";
 import { TODOMATE_API_SERVER_HOST } from "./memberApi";
 
 // 카카오에서 발급받은 내 REST API 키
-const rest_api_key = `419f214fb57dad01e69ef8925cc56a09`;
+const rest_api_key = `1e27e26fb5251c07bf30940ef48e235a`;
 // RedirectURI
 // const redirect_uri = `http://3.36.84.228:3001/redirect`;
 const redirect_uri = `http://13.125.110.108:3001/redirect`;
