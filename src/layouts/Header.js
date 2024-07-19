@@ -77,9 +77,9 @@ export default function Header() {
                 >
                   <input
                     className={`border-b w-auto transition-all duration-400 ease-in-out font-[Pretendard-Light] text-xs lg:text-sm select-none ${
-                      isClicked ? "" : ""
+                      isClicked ? "w-44 lg:w-64 mr-1 px-1" : "w-0"
                     }`}
-                    placeholder="찾고자 하는 사용자의 닉네임을 작성해주세요"
+                    placeholder="찾고자 하는 사용자의 닉네임을 작성해주세요 인가요?"
                     onChange={handleInputChange}
                     value={inputVal}
                   />
