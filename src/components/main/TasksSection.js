@@ -82,7 +82,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
   };
 
   const taskModifyClicked = (tid, originVal) => {
-    if (inputVal === "") {
+    if (inputVal === "" || inputVal === null) {
       callbackFn({ type: "MODIFY", value: originVal, tid: tid });
     } else {
       callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
