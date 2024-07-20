@@ -105,77 +105,20 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2 py-1 border-b-2 w-full border-gray-800">
-          {title === "할 일" ? (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="gray"
-                className={`size-5 ${isMine ? "inline" : "hidden"}`}
-              >
-                <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
-              </svg>
-              <div className="font-[Pretendard-SemiBold] text-base select-none">
-                {title}
-              </div>
-              {!showInputField ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className={`size-6 ${isMine ? "inline" : "hidden"}`}
-                  onClick={() => {
-                    setShowInputField(!showInputField);
-                    setShowThreeDot(-1);
-                  }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
-              ) : (
-                <button
-                  className="w-8 h-5 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular] select-none"
-                  onClick={() => setShowInputField(!showInputField)}
-                >
-                  취소
-                </button>
-              )}
-            </>
-          ) : (
-            <>
-              {isAddModalOpen && (
-                <RotineAddModal
-                  closeModal={() => setIsAddModalOpen(false)}
-                  callbackFn={callbackFn}
-                />
-              )}
-              {isModifyModalOpen && (
-                <RoutineModifyModal
-                  closeModal={() => setIsModifyModalOpen(false)}
-                  callbackFn={callbackFn}
-                  drId={drId}
-                />
-              )}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="gray"
-                className={`size-6 ${isMine ? "inline" : "hidden"}`}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <div className="font-[Pretendard-SemiBold] text-base select-none">
-                {title}
-              </div>
+          {/* {title === "할 일" ? ( */}
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="gray"
+              className={`size-5 ${isMine ? "inline" : "hidden"}`}
+            >
+              <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
+            </svg>
+            <div className="font-[Pretendard-SemiBold] text-base select-none">
+              {title}
+            </div>
+            {!showInputField ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -183,7 +126,10 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className={`size-6 ${isMine ? "inline" : "hidden"}`}
-                onClick={() => setIsAddModalOpen(true)}
+                onClick={() => {
+                  setShowInputField(!showInputField);
+                  setShowThreeDot(-1);
+                }}
               >
                 <path
                   strokeLinecap="round"
@@ -191,13 +137,69 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                   d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
-            </>
-          )}
+            ) : (
+              <button
+                className="w-8 h-5 bg-white rounded-xl justify-center border-2 border-gray-600 text-xs font-[Pretendard-Regular] select-none"
+                onClick={() => setShowInputField(!showInputField)}
+              >
+                취소
+              </button>
+            )}
+          </>
+          {/* ) : ( */}
+          <>
+            {isAddModalOpen && (
+              <RotineAddModal
+                closeModal={() => setIsAddModalOpen(false)}
+                callbackFn={callbackFn}
+              />
+            )}
+            {isModifyModalOpen && (
+              <RoutineModifyModal
+                closeModal={() => setIsModifyModalOpen(false)}
+                callbackFn={callbackFn}
+                drId={drId}
+              />
+            )}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="gray"
+              className={`size-6 ${isMine ? "inline" : "hidden"}`}
+            >
+              <path
+                fillRule="evenodd"
+                d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <div className="font-[Pretendard-SemiBold] text-base select-none">
+              {title}
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className={`size-6 cursor-pointer ${
+                isMine ? "inline" : "hidden"
+              }`}
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </>
+          {/* )} */}
         </div>
       </div>
       <ul>
         {/* 새 할일 작성 위한 Input Field 여부 */}
-        {showInputField ? (
+        {showInputField && (
           <div className="flex py-1 mt-3 justify-between">
             <div
               className={
@@ -216,8 +218,6 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
               추가하기
             </button>
           </div>
-        ) : (
-          <></>
         )}
         {title === "할 일" ? (
           <>
