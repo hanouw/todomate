@@ -14,13 +14,14 @@ export default function Header() {
 
   const handleInputChange = (event) => {
     setInputVal(event.target.value);
-    if (inputVal != "") {
-      searchFriends({ mid: loginInfo.mid, startsWith: inputVal }).then(
-        (data) => {
-          setFilteredItems(data.RESULT);
-          console.log(filteredItems);
-        }
-      );
+    if (inputVal != "" && !inputVal.startsWith(" ")) {
+      searchFriends({
+        mid: loginInfo.mid,
+        startsWith: inputVal,
+      }).then((data) => {
+        setFilteredItems(data.RESULT);
+        console.log(filteredItems);
+      });
     }
   };
 
@@ -76,8 +77,8 @@ export default function Header() {
                   className={`flex rounded-md text-sm transition-all duration-400 ease-in-out cursor-pointer item-container`}
                 >
                   <input
-                    className={`border-b w-auto transition-all duration-400 ease-in-out font-[Pretendard-Light] text-xs lg:text-sm select-none ${
-                      isClicked ? "w-44 lg:w-64 mr-1 px-1" : "hidden"
+                    className={`border-b transition-all duration-400 ease-in-out font-[Pretendard-Light] text-xs lg:text-sm ${
+                      isClicked ? "w-44 lg:w-64 px-1" : "w-0"
                     }`}
                     placeholder="찾고자 하는 사용자의 닉네임을 작성해주세요"
                     onChange={handleInputChange}

@@ -82,7 +82,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
   };
 
   const taskModifyClicked = (tid, originVal) => {
-    if (inputVal === "") {
+    if (inputVal === "" || inputVal === null || inputVal === undefined) {
       callbackFn({ type: "MODIFY", value: originVal, tid: tid });
     } else {
       callbackFn({ type: "MODIFY", value: inputVal, tid: tid });
@@ -111,7 +111,9 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="gray"
-                className={`size-5 ${isMine ? "inline" : "hidden"}`}
+                className={`size-5 cursor-pointer ${
+                  isMine ? "inline" : "hidden"
+                }`}
               >
                 <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
               </svg>
@@ -125,7 +127,9 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className={`size-6 ${isMine ? "inline" : "hidden"}`}
+                  className={`size-6 cursor-pointer ${
+                    isMine ? "inline" : "hidden"
+                  }`}
                   onClick={() => {
                     setShowInputField(!showInputField);
                     setShowThreeDot(-1);
@@ -165,7 +169,9 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="gray"
-                className={`size-6 ${isMine ? "inline" : "hidden"}`}
+                className={`size-6 cursor-pointer ${
+                  isMine ? "inline" : "hidden"
+                }`}
               >
                 <path
                   fillRule="evenodd"
@@ -182,7 +188,9 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className={`size-6 ${isMine ? "inline" : "hidden"}`}
+                className={`size-6 cursor-pointer ${
+                  isMine ? "inline" : "hidden"
+                }`}
                 onClick={() => setIsAddModalOpen(true)}
               >
                 <path
@@ -197,7 +205,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
       </div>
       <ul>
         {/* 새 할일 작성 위한 Input Field 여부 */}
-        {showInputField ? (
+        {showInputField && (
           <div className="flex py-1 mt-3 justify-between">
             <div
               className={
@@ -216,8 +224,6 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
               추가하기
             </button>
           </div>
-        ) : (
-          <></>
         )}
         {title === "할 일" ? (
           <>
@@ -239,7 +245,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="3"
                       stroke="white"
-                      className="size-4"
+                      className="size-4 cursor-pointer"
                     >
                       <path
                         strokeLinecap="round"
@@ -305,7 +311,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-6"
+                      className="size-6 cursor-pointer"
                       onClick={() =>
                         deleteTask({ tid: task.tid }).then(() => {
                           callbackFn({ type: "refresh" });
@@ -326,7 +332,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-6"
+                      className="size-6 cursor-pointer"
                       onClick={() => {
                         setIsModify(task.tid);
                         setShowThreeDot(-1);
@@ -354,7 +360,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="gray"
-                    className={`size-6 ${
+                    className={`size-6 cursor-pointer ${
                       isModify === task.tid ? "hidden" : "inline"
                     } ${isMine ? "inline" : "hidden"}`}
                     onClick={() => setShowThreeDot(task.tid)}
@@ -387,7 +393,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="3"
                       stroke="white"
-                      className="size-4"
+                      className="size-4 cursor-pointer"
                     >
                       <path
                         strokeLinecap="round"
@@ -421,7 +427,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-6"
+                      className="size-6 cursor-pointer"
                       onClick={() =>
                         deleteDailyRoutine({ drId: task.drId }).then(() => {
                           callbackFn({ type: "refresh" });
@@ -441,7 +447,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-6"
+                      className="size-6 cursor-pointer"
                       onClick={() => {
                         setIsModifyModalOpen(true);
                         setShowThreeDot(-1);
@@ -470,7 +476,7 @@ const TaskCategory = ({ title, tasks, isMine, callbackFn }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="gray"
-                    className={`size-6 ${
+                    className={`size-6 cursor-pointer ${
                       isModify === task.drId ? "hidden" : "inline"
                     }`}
                     onClick={() => setShowThreeDot(task.drId)}
