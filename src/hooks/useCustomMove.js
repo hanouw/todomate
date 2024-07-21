@@ -23,8 +23,12 @@ const useCustomMove = () => {
   };
 
   const moveToSignup = () => {
-    navigate({pathname: `/signup`})
-  }
+    navigate({ pathname: `/signup` });
+  };
+
+  const moveToNameAdd = () => {
+    navigate({ pathname: `/name` });
+  };
 
   return {
     moveToBack,
@@ -32,6 +36,7 @@ const useCustomMove = () => {
     moveToMyPage,
     moveToLogin,
     moveToSignup,
+    moveToNameAdd,
   };
 };
 

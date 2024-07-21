@@ -7,6 +7,7 @@ const MyPage = lazy(() => import("../pages/MyPage"));
 const Login = lazy(() => import("../pages/LoginPage"))
 const Signup = lazy(() => import("../pages/SignupPage"))
 const KakaoRedirect = lazy(() => import("../pages/KakaoRedirect"))
+const NameAdd = lazy(() => import("../pages/NameAddPage"))
 
 // 경로 매핑하는 곳 (root)
 const Router = () => {
@@ -48,6 +49,14 @@ const Router = () => {
       element: (
         <Suspense fallback={<LoadingPage />}>
           <KakaoRedirect />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/name",
+      element: (
+        <Suspense fallback={<LoadingPage />}>
+          <NameAdd />
         </Suspense>
       ),
     },
