@@ -22,7 +22,11 @@ const KakaoRedirect = () => {
         //console.log("getMemberWithAccessToken - memberInfo");
         //console.log(memberInfo);
         dispatch(login(memberInfo));
-        moveToNameAdd();
+        if (memberInfo.name) {
+          moveToMain()
+        } else {
+          moveToNameAdd();
+        }
       });
     });
   }, [authCode]); // authCode값이 변경될때만 요청되도록 useEffect 사용
