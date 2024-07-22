@@ -46,7 +46,7 @@ const LoginPage = () => {
           <span>카카오톡 로그인</span>
         </Link>
       </div>
-      <div className="w-full sm:w-1/2 md:w-1/3 px-4">
+      {/* <div className="w-full sm:w-1/2 md:w-1/3 px-4">
         <span className="font-[Pretendard-Regular]">이메일 주소</span>
         <input
           name="email"
@@ -74,7 +74,7 @@ const LoginPage = () => {
         <button className={buttonClassName} onClick={handleClickLogin}>
           로그인하기
         </button>
-      </div>
+      </div> */}
     </BasicLayout>
   );
 };
