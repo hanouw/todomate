@@ -10,6 +10,7 @@ import {
   friendBanned,
   getFriendRequest,
   getFriends,
+  getName,
 } from "../api/memberApi";
 
 const MainPage = () => {
