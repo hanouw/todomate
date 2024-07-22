@@ -23,6 +23,13 @@ export const register = async (val) => {
   return response.data;
 };
 
+export const getName = async (mid) => {
+  const response = await axios.get(
+    `${TODOMATE_API_SERVER_HOST}/members/getname/${mid}`
+  );
+  return response.data;
+};
+
 export const deleteMember = async (mid) => {
   console.log('deleteMember 실행');
   const response = await axios.delete(`${TODOMATE_API_SERVER_HOST}/members/${mid}`);
