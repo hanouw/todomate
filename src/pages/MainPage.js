@@ -19,7 +19,7 @@ const MainPage = () => {
   const [friends, setFriends] = useState([]);
   const [friendRequest, setFriendRequest] = useState([]);
   const [showFriends, setShowFriends] = useState(false);
-  const [pageOwner, setPageOwner] = useState(loginInfo);
+  const [pageOwner, setPageOwner] = useState({});
 
   const monthIsChanged = useCallback((result) => {
     setCurrentDate(result);
@@ -77,6 +77,12 @@ const MainPage = () => {
     });
   }, [pageOwner, showFriends]);
 
+  useEffect(() => {
+    getName(loginInfo.mid).then((data) => {
+      setPageOwner(data.RESULT);
+    });
+  }, []);
+
   return (
     <BasicLayout>
       <div className="grid place-items-center mb-20">
@@ -122,7 +128,6 @@ const MainPage = () => {
             </div>
 
             <div className="font-[Pretendard-SemiBold] text-base lg:text-lg text-center m-2 p-2">
-              {/* //hover:shadow-lg rounded-lg transition-all duration-400 ease-in-out */}
               {pageOwner.name}의 Todo
             </div>
           </div>
