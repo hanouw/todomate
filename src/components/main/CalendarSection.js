@@ -17,7 +17,7 @@ const CalendarSection = ({ callbackFn, refresh, pageOwner }) => {
       setTaskList(data);
     });
     callbackFn(currentDate);
-  }, [currentDate, refresh]);
+  }, [pageOwner, currentDate, refresh]);
 
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
