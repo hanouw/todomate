@@ -11,7 +11,7 @@ const KakaoRedirect = () => {
 
   const dispatch = useDispatch();
 
-  const { moveToMain } = useCustomMove();
+  const { moveToMain, moveToNameAdd } = useCustomMove();
 
   // 꺼낸 인가코드를 주면서 Access Token 달라고 카카오에 다시 요청
   useEffect(() => {
@@ -22,7 +22,7 @@ const KakaoRedirect = () => {
         //console.log("getMemberWithAccessToken - memberInfo");
         //console.log(memberInfo);
         dispatch(login(memberInfo));
-        moveToMain();
+        moveToNameAdd();
       });
     });
   }, [authCode]); // authCode값이 변경될때만 요청되도록 useEffect 사용
